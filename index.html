@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Karpet Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loading-spinner { border-top-color: #3498db; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <header class="bg-white shadow-sm sticky top-0 z-10 p-4">
+        <h1 class="text-xl font-bold text-center text-gray-800">Katalog Stok Karpet</h1>
+        <p class="text-xs text-center text-gray-500 mt-1">Data terupdate otomatis dari sistem</p>
+    </header>
+
+    <main class="p-4 max-w-md mx-auto">
+        <div id="loading" class="flex flex-col items-center justify-center mt-20">
+            <div class="loading-spinner w-10 h-10 border-4 border-gray-200 rounded-full mb-4"></div>
+            <p class="text-gray-500">Mengambil data stok...</p>
+        </div>
+
+        <div id="katalog-container" class="grid grid-cols-1 gap-6 hidden">
+            </div>
+    </main>
+
+    <script>
+        // Konfigurasi Database Anda
+        const SHEET_ID = '1iLJWtfJntcjZalA7q-FFIUNe8BXGT40za7kMeELXfJk';
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+
+        async function loadKatalog() {
+            try {
+                const response = await fetch(SHEET_URL);
+                const text = await response.text();
+                const data = JSON.parse(text.substr(47).slice(0, -2));
+                
+                const rows = data.table.rows;
+                const container = document.getElementById('katalog-container');
+                const loading = document.getElementById('loading');
+
+                container.innerHTML = '';
+
+                rows.forEach(row => {
+                    // Mapping data dari kolom (A=0, B=1, dst)
+                    const nama = row.c[0] ? row.c[0].v : 'Tanpa Nama';
+                    const ukuran = row.c[1] ? row.c[1].v : '-';
+                    const harga = row.c[2] ? row.c[2].v : '0';
+                    const stok = row.c[3] ? row.c[3].v : 'Habis';
+                    const foto = row.c[4] ? row.c[4].v : 'https://via.placeholder.com/300x200?text=No+Image';
+
+                    // Template Kartu Karpet
+                    const card = `
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                            <img src="${foto}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/300x200?text=Foto+Tidak+Ditemukan'">
+                            <div class="p-4">
+                                <div class="flex justify-between items-start">
+                                    <h3 class="text-lg font-bold text-gray-800">${nama}</h3>
+                                    <span class="bg-green-100 text-green-700 text-[10px] px-2 py-1 rounded-full font-bold uppercase">
+                                        STOK: ${stok}
+                                    </span>
+                                </div>
+                                <p class="text-gray-600 text-sm mt-1">Ukuran: <strong>${ukuran}</strong></p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <span class="text-orange-600 font-extrabold text-lg">Rp ${harga}</span>
+                                    <a href="https://wa.me/628XXXXXXXXXX?text=Halo, saya ingin tanya karpet ${nama} ukuran ${ukuran}" 
+                                       class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition">
+                                        Tanya Admin
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+
+                loading.classList.add('hidden');
+                container.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loading').innerHTML = '<p class="text-red-500 text-center text-sm">Gagal memuat data. Pastikan Google Sheets sudah "Published to Web" dan izin aksesnya "Anyone with the link".</p>';
+            }
+        }
+
+        loadKatalog();
+    </script>
+</body>
+</html>
