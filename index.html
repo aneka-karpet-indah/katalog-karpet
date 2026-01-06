@@ -3,90 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Karpet Digital</title>
+    <title>Katalog Toko Karpet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .loading-spinner { border-top-color: #3498db; animation: spinner 1.5s linear infinite; }
+        .filter-btn.active { background-color: #3b82f6; color: white; border-color: #3b82f6; }
+        .loading-spinner { border-top-color: #3b82f6; animation: spinner 1s linear infinite; }
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-100 min-h-screen">
 
-    <header class="bg-white shadow-sm sticky top-0 z-10 p-4">
-        <h1 class="text-xl font-bold text-center text-gray-800">Katalog Stok Karpet</h1>
-        <p class="text-xs text-center text-gray-500 mt-1">Data terupdate otomatis dari sistem</p>
+    <header class="bg-white shadow-md sticky top-0 z-20 p-4">
+        <h1 class="text-xl font-extrabold text-center text-gray-800">KATALOG KARPET</h1>
+        
+        <div id="filter-bar" class="flex gap-2 overflow-x-auto py-3 mt-2 no-scrollbar">
+            <button onclick="filterProduk('Semua')" class="filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full border border-gray-300 text-sm font-medium transition">Semua</button>
+            </div>
     </header>
 
-    <main class="p-4 max-w-md mx-auto">
+    <main class="p-4 max-w-2xl mx-auto">
         <div id="loading" class="flex flex-col items-center justify-center mt-20">
             <div class="loading-spinner w-10 h-10 border-4 border-gray-200 rounded-full mb-4"></div>
-            <p class="text-gray-500">Mengambil data stok...</p>
+            <p class="text-gray-500">Memuat koleksi terbaru...</p>
         </div>
 
-        <div id="katalog-container" class="grid grid-cols-1 gap-6 hidden">
+        <div id="katalog-container" class="grid grid-cols-2 gap-3 sm:gap-6 hidden">
             </div>
     </main>
 
     <script>
-        // Konfigurasi Database Anda
         const SHEET_ID = '1iLJWtfJntcjZalA7q-FFIUNe8BXGT40za7kMeELXfJk';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+        
+        let semuaProduk = [];
 
-        async function loadKatalog() {
+        async function initKatalog() {
             try {
                 const response = await fetch(SHEET_URL);
                 const text = await response.text();
                 const data = JSON.parse(text.substr(47).slice(0, -2));
-                
                 const rows = data.table.rows;
-                const container = document.getElementById('katalog-container');
-                const loading = document.getElementById('loading');
 
-                container.innerHTML = '';
+                semuaProduk = rows.map(row => ({
+                    koleksi: row.c[0] ? row.c[0].v : 'Lainnya',
+                    nama: row.c[1] ? row.c[1].v : 'Tanpa Nama',
+                    ukuran: row.c[2] ? row.c[2].v : '-',
+                    harga: row.c[3] ? row.c[3].v : '0',
+                    stok: row.c[4] ? row.c[4].v : '0',
+                    foto: row.c[5] ? row.c[5].v : 'https://via.placeholder.com/400x300?text=Foto+Karpet'
+                }));
 
-                rows.forEach(row => {
-                    // Mapping data dari kolom (A=0, B=1, dst)
-                    const nama = row.c[0] ? row.c[0].v : 'Tanpa Nama';
-                    const ukuran = row.c[1] ? row.c[1].v : '-';
-                    const harga = row.c[2] ? row.c[2].v : '0';
-                    const stok = row.c[3] ? row.c[3].v : 'Habis';
-                    const foto = row.c[4] ? row.c[4].v : 'https://via.placeholder.com/300x200?text=No+Image';
-
-                    // Template Kartu Karpet
-                    const card = `
-                        <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-                            <img src="${foto}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/300x200?text=Foto+Tidak+Ditemukan'">
-                            <div class="p-4">
-                                <div class="flex justify-between items-start">
-                                    <h3 class="text-lg font-bold text-gray-800">${nama}</h3>
-                                    <span class="bg-green-100 text-green-700 text-[10px] px-2 py-1 rounded-full font-bold uppercase">
-                                        STOK: ${stok}
-                                    </span>
-                                </div>
-                                <p class="text-gray-600 text-sm mt-1">Ukuran: <strong>${ukuran}</strong></p>
-                                <div class="mt-4 flex items-center justify-between">
-                                    <span class="text-orange-600 font-extrabold text-lg">Rp ${harga}</span>
-                                    <a href="https://wa.me/628XXXXXXXXXX?text=Halo, saya ingin tanya karpet ${nama} ukuran ${ukuran}" 
-                                       class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition">
-                                        Tanya Admin
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    container.innerHTML += card;
-                });
-
-                loading.classList.add('hidden');
-                container.classList.remove('hidden');
+                tampilkanTombolFilter();
+                tampilkanProduk(semuaProduk);
+                
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('katalog-container').classList.remove('hidden');
 
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('loading').innerHTML = '<p class="text-red-500 text-center text-sm">Gagal memuat data. Pastikan Google Sheets sudah "Published to Web" dan izin aksesnya "Anyone with the link".</p>';
+                document.getElementById('loading').innerHTML = '<p class="text-red-500 text-center">Gagal memuat data. Periksa koneksi atau Google Sheets Anda.</p>';
             }
         }
 
-        loadKatalog();
+        function tampilkanTombolFilter() {
+            const filterBar = document.getElementById('filter-bar');
+            const daftarKoleksi = [...new Set(semuaProduk.map(p => p.koleksi))];
+
+            daftarKoleksi.forEach(kls => {
+                const btn = document.createElement('button');
+                btn.innerText = kls;
+                btn.className = "filter-btn whitespace-nowrap px-4 py-1.5 rounded-full border border-gray-300 text-sm font-medium transition bg-white";
+                btn.onclick = () => filterProduk(kls, btn);
+                filterBar.appendChild(btn);
+            });
+        }
+
+        function filterProduk(kategori, btnEle) {
+            // Update UI Tombol
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active', 'bg-blue-500', 'text-white'));
+            if(btnEle) btnEle.classList.add('active');
+            else document.querySelector('.filter-btn').classList.add('active');
+
+            const filtered = kategori === 'Semua' 
+                ? semuaProduk 
+                : semuaProduk.filter(p => p.koleksi === kategori);
+            
+            tampilkanProduk(filtered);
+        }
+
+        function tampilkanProduk(produk) {
+            const container = document.getElementById('katalog-container');
+            container.innerHTML = '';
+
+            produk.forEach(item => {
+                const card = `
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
+                        <img src="${item.foto}" class="w-full h-40 object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=Foto+Tidak+Tersedia'">
+                        <div class="p-3">
+                            <p class="text-[10px] uppercase tracking-wider text-blue-600 font-bold">${item.koleksi}</p>
+                            <h3 class="font-bold text-gray-800 text-sm truncate">${item.nama}</h3>
+                            <p class="text-xs text-gray-500 mt-1">Ukuran: ${item.ukuran}</p>
+                            <p class="text-blue-700 font-black text-sm mt-2">Rp ${item.harga}</p>
+                            <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                                <span class="text-[10px] ${item.stok != '0' ? 'text-green-600' : 'text-red-600'} font-bold">
+                                    ● Stok: ${item.stok}
+                                </span>
+                                <a href="https://wa.me/6287881807772?text=Halo, stok karpet ${item.koleksi} ${item.nama} ukuran ${item.ukuran} masih ada?" 
+                                   class="bg-green-500 text-white p-1.5 rounded-full shadow-sm">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.891 11.891-11.891 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.403 0 6.556-5.332 11.891-11.891 11.891-2.003 0-3.976-.506-5.713-1.468l-6.18 1.686zm10.37-3.935c1.697 0 3.354-.456 4.798-1.319l.344-.205 3.568.935-.952-3.48.226-.359c.953-1.517 1.456-3.284 1.456-5.101 0-5.181-4.215-9.395-9.395-9.395-2.51 0-4.87.98-6.642 2.753-1.774 1.773-2.751 4.133-2.751 6.642 0 1.942.569 3.837 1.644 5.47l.255.388-1.091 3.987 4.085-1.116.379.225c1.472.873 3.161 1.334 4.877 1.334z"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        initKatalog();
     </script>
 </body>
 </html>
