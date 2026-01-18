@@ -3,46 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Karpet Digital</title>
+    <title>Katalog Karpet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .filter-btn.active { background-color: #1d4ed8; color: white; border-color: #1d4ed8; }
+        .filter-btn.active { background-color: #2563eb; color: white; border-color: #2563eb; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .loading-spinner { border-top-color: #1d4ed8; animation: spinner 1s linear infinite; }
+        .loading-spinner { border-top-color: #2563eb; animation: spinner 0.8s linear infinite; }
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen text-gray-800">
+<body class="bg-gray-100 min-h-screen">
 
     <header class="bg-white shadow-sm sticky top-0 z-30">
-        <div class="p-4 flex flex-col items-center">
-            <h1 class="text-xl font-black tracking-tighter text-gray-900 uppercase">Katalog Karpet</h1>
-            <p class="text-[10px] text-gray-400 font-medium">Update Stok Real-Time</p>
+        <div class="p-4 text-center">
+            <h1 class="text-xl font-black text-gray-800 tracking-tight uppercase">Katalog Karpet</h1>
         </div>
-        
         <div id="filter-bar" class="flex gap-2 overflow-x-auto px-4 pb-3 no-scrollbar">
-            <button onclick="filterProduk('Semua', this)" class="filter-btn active whitespace-nowrap px-5 py-2 rounded-full border border-gray-200 text-xs font-bold transition-all shadow-sm bg-white">
-                SEMUA
-            </button>
-            </div>
+            <button onclick="filterProduk('Semua', this)" class="filter-btn active whitespace-nowrap px-4 py-2 rounded-full border border-gray-300 text-xs font-bold transition bg-white">SEMUA</button>
+        </div>
     </header>
 
-    <main class="p-3 max-w-4xl mx-auto">
-        <div id="loading" class="flex flex-col items-center justify-center mt-24">
-            <div class="loading-spinner w-12 h-12 border-4 border-gray-200 rounded-full mb-4"></div>
-            <p class="text-sm text-gray-400 font-medium animate-pulse">Menghubungkan ke gudang data...</p>
+    <main class="p-3 max-w-5xl mx-auto">
+        <div id="loading" class="flex flex-col items-center justify-center mt-20">
+            <div class="loading-spinner w-10 h-10 border-4 border-gray-200 rounded-full mb-3"></div>
+            <p class="text-gray-500 text-sm">Sinkronisasi stok...</p>
         </div>
 
-        <div id="katalog-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 hidden">
-            </div>
+        <div id="katalog-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 hidden"></div>
     </main>
 
     <script>
-        // KONFIGURASI DATA
         const SHEET_ID = '1iLJWtfJntcjZalA7q-FFIUNe8BXGT40za7kMeELXfJk';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-        const NOMOR_WA = '628XXXXXXXXXX'; // <--- GANTI DENGAN NOMOR WA TOKO ANDA
+        const NOMOR_WA = '628XXXXXXXXXX'; // Ganti dengan nomor Anda
 
         let semuaProduk = [];
 
@@ -50,106 +43,78 @@
             try {
                 const response = await fetch(SHEET_URL);
                 const text = await response.text();
-                // Membersihkan format JSON dari Google
-                const data = JSON.parse(text.substr(47).slice(0, -2));
-                const rows = data.table.rows;
+                const json = JSON.parse(text.substr(47).slice(0, -2));
+                const rows = json.table.rows;
 
-                semuaProduk = rows.map(row => ({
-                    koleksi: row.c[0] ? row.c[0].v : 'Lainnya',
-                    nama: row.c[1] ? row.c[1].v : 'Tanpa Nama',
-                    ukuran: row.c[2] ? row.c[2].v : '-',
-                    harga: row.c[3] ? row.c[3].v : 'Hubungi Admin',
-                    stok: row.c[4] ? row.c[4].v : '0',
-                    foto: row.c[5] ? row.c[5].v : 'https://via.placeholder.com/400x500?text=Foto+Belum+Ada'
+                semuaProduk = rows.filter(row => row.c[0] !== null).map(row => ({
+                    koleksi: row.c[0] ? String(row.c[0].v) : '',
+                    nama: row.c[1] ? String(row.c[1].v) : '',
+                    ukuran: row.c[2] ? String(row.c[2].v) : '',
+                    harga: row.c[3] ? row.c[3].f || row.c[3].v : '0',
+                    stok: row.c[4] ? String(row.c[4].v) : '0',
+                    foto: row.c[5] ? String(row.c[5].v) : ''
                 }));
 
                 tampilkanTombolFilter();
                 tampilkanProduk(semuaProduk);
                 
-                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('loading').style.display = 'none';
                 document.getElementById('katalog-container').classList.remove('hidden');
-
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('loading').innerHTML = `
-                    <div class="text-center p-10 bg-red-50 rounded-xl border border-red-100">
-                        <p class="text-red-500 font-bold">Koneksi Gagal</p>
-                        <p class="text-xs text-red-400 mt-1">Pastikan Google Sheet sudah 'Public'</p>
-                    </div>`;
+            } catch (e) {
+                document.getElementById('loading').innerHTML = '<p class="text-red-500">Gagal memuat data. Pastikan Sheet sudah dipublikasikan.</p>';
             }
         }
 
         function tampilkanTombolFilter() {
             const filterBar = document.getElementById('filter-bar');
-            const daftarKoleksi = [...new Set(semuaProduk.map(p => p.koleksi))];
-
-            daftarKoleksi.forEach(kls => {
+            const kategori = [...new Set(semuaProduk.map(p => p.koleksi))];
+            kategori.forEach(k => {
                 const btn = document.createElement('button');
-                btn.innerText = kls.toUpperCase();
-                btn.className = "filter-btn whitespace-nowrap px-5 py-2 rounded-full border border-gray-200 text-xs font-bold transition-all shadow-sm bg-white text-gray-600";
-                btn.onclick = (e) => filterProduk(kls, e.target);
+                btn.innerText = k.toUpperCase();
+                btn.className = "filter-btn whitespace-nowrap px-4 py-2 rounded-full border border-gray-300 text-xs font-bold transition bg-white";
+                btn.onclick = (e) => filterProduk(k, e.target);
                 filterBar.appendChild(btn);
             });
         }
 
-        function filterProduk(kategori, btnEle) {
+        function filterProduk(kat, btn) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btnEle.classList.add('active');
-
-            const filtered = kategori === 'Semua' 
-                ? semuaProduk 
-                : semuaProduk.filter(p => p.koleksi === kategori);
-            
+            btn.classList.add('active');
+            const filtered = kat === 'Semua' ? semuaProduk : semuaProduk.filter(p => p.koleksi === kat);
             tampilkanProduk(filtered);
         }
 
-        function tampilkanProduk(produk) {
+        function tampilkanProduk(data) {
             const container = document.getElementById('katalog-container');
             container.innerHTML = '';
-
-            produk.forEach(item => {
-                const waLink = `https://wa.me/${NOMOR_WA}?text=Halo%20admin%2C%20saya%20mau%20tanya%20stok%20karpet%20ini%3A%0A%0A*Koleksi%3A*%20${item.koleksi}%0A*Motif%3A*%20${item.nama}%0A*Ukuran%3A*%20${item.ukuran}%0A%0A*Foto%3A*%20${item.foto}`;
-
-                const card = `
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
-                        <div class="relative aspect-[3/4] overflow-hidden bg-gray-200">
-                            <img src="${item.foto}" class="w-full h-full object-cover" loading="lazy" 
-                                 onerror="this.src='https://via.placeholder.com/400x500?text=Gambar+Rusak'">
-                            <div class="absolute top-2 right-2 bg-black/60 text-white text-[9px] px-2 py-1 rounded-md backdrop-blur-sm font-bold">
-                                ${item.ukuran}
-                            </div>
+            data.forEach(item => {
+                const formatHarga = Number(item.harga.replace(/[^0-9.-]+/g,"")).toLocaleString('id-ID');
+                const waMsg = `Halo admin, saya mau tanya karpet ${item.koleksi} ${item.nama} ukuran ${item.ukuran}. %0A%0AFoto: ${item.foto}`;
+                
+                container.innerHTML += `
+                    <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col">
+                        <div class="relative aspect-square">
+                            <img src="${item.foto}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400?text=Gambar+Error'">
+                            <div class="absolute top-2 left-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded font-bold">${item.ukuran}</div>
                         </div>
-
                         <div class="p-3 flex flex-col flex-grow">
-                            <span class="text-[9px] font-black text-blue-600 uppercase tracking-tighter mb-1">${item.koleksi}</span>
-                            <h3 class="text-xs font-bold text-gray-800 leading-tight mb-2 uppercase line-clamp-2">${item.nama}</h3>
-                            
+                            <p class="text-[9px] font-bold text-blue-600 uppercase mb-1">${item.koleksi}</p>
+                            <h3 class="text-xs font-bold text-gray-800 mb-2 line-clamp-2">${item.nama}</h3>
                             <div class="mt-auto">
-                                <div class="flex flex-col mb-3">
-                                    <span class="text-[10px] text-gray-400">Harga:</span>
-                                    <span class="text-sm font-black text-gray-900">Rp ${item.harga}</span>
-                                </div>
-
-                                <div class="flex items-center justify-between border-t border-gray-50 pt-3">
-                                    <div class="flex flex-col">
-                                        <span class="text-[9px] text-gray-400 uppercase font-bold">Stok</span>
-                                        <span class="text-[10px] ${item.stok != '0' ? 'text-green-600' : 'text-red-600'} font-black">
-                                            ${item.stok != '0' ? 'TERSEDIA' : 'HABIS'}
-                                        </span>
-                                    </div>
-                                    <a href="${waLink}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg transition-colors shadow-sm shadow-green-200">
+                                <p class="text-sm font-black text-gray-900">Rp ${formatHarga}</p>
+                                <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-100">
+                                    <span class="text-[10px] font-bold ${item.stok != '0' ? 'text-green-600' : 'text-red-600'}">
+                                        ● ${item.stok != '0' ? 'READY' : 'HABIS'}
+                                    </span>
+                                    <a href="https://wa.me/${NOMOR_WA}?text=${waMsg}" class="bg-green-500 text-white p-2 rounded-lg">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.891 11.891-11.891 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.403 0 6.556-5.332 11.891-11.891 11.891-2.003 0-3.976-.506-5.713-1.468l-6.18 1.686zm10.37-3.935c1.697 0 3.354-.456 4.798-1.319l.344-.205 3.568.935-.952-3.48.226-.359c.953-1.517 1.456-3.284 1.456-5.101 0-5.181-4.215-9.395-9.395-9.395-2.51 0-4.87.98-6.642 2.753-1.774 1.773-2.751 4.133-2.751 6.642 0 1.942.569 3.837 1.644 5.47l.255.388-1.091 3.987 4.085-1.116.379.225c1.472.873 3.161 1.334 4.877 1.334z"/></svg>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                container.innerHTML += card;
+                    </div>`;
             });
         }
-
-        // Jalankan saat halaman dibuka
         initKatalog();
     </script>
 </body>
