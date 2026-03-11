@@ -275,7 +275,7 @@
 
     <script>
         const SHEET_ID  = '1iLJWtfJntcjZalA7q-FFIUNe8BXGT40za7kMeELXfJk';
-        const WA_NUMBER = '628XXXXXXXXXX'; // GANTI NOMOR WHATSAPP ANDA
+        const WA_NUMBER = '6287881807772';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
         const CACHE_KEY = 'aki_katalog_v2';
         const CACHE_TTL = 5 * 60 * 1000;
@@ -379,8 +379,11 @@
             initLazyLoading();
         }
 
-        function buildWaLink(k,n,u,f) {
-            return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Halo Aneka Karpet Indah, saya mau tanya karpet ${k} ${n} ukuran ${u}.\nFoto: ${f}`)}`;
+        function buildWaLink(k, n, u, f) {
+            // Encode setiap bagian secara terpisah agar karakter spesial di URL foto tidak merusak link
+            const pesan = 'Halo Aneka Karpet Indah, saya mau tanya karpet '
+                + k + ' ' + n + ' ukuran ' + u + '.\nFoto: ' + f;
+            return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(pesan);
         }
 
         function initLazyLoading() {
@@ -398,19 +401,23 @@
             document.querySelectorAll('.lazy-img').forEach(img => lazyObserver.observe(img));
         }
 
-        function updVar(cid,u,h,s,btn,f) {
+        function updVar(cid, u, h, s, btn, f) {
             const img = document.getElementById(`${cid}-img`);
             img.classList.remove('loaded'); img.src = f;
             img.onload  = () => img.classList.add('loaded');
             img.onerror = () => { img.src='https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error'; img.classList.add('loaded'); };
+
             document.getElementById(`${cid}-h`).textContent = `Rp ${formatRupiah(h)}`;
             const sel = document.getElementById(`${cid}-s`);
-            sel.textContent = `● Stok: ${s}`; sel.className = `card-stok ${s!=0?'stok-ada':'stok-habis'}`;
+            sel.textContent = `● Stok: ${s}`;
+            sel.className = `card-stok ${s != 0 ? 'stok-ada' : 'stok-habis'}`;
+
             const card = btn.closest('.card');
-            document.getElementById(`${cid}-wa`).href = buildWaLink(
-                card.querySelector('.card-koleksi').textContent.trim(),
-                card.querySelector('.card-nama').textContent.trim(), u, f);
-            btn.closest('.ukuran-overlay').querySelectorAll('.ukuran-btn').forEach(b=>b.classList.remove('selected'));
+            const kol  = card.querySelector('.card-koleksi').textContent.trim();
+            const nam  = card.querySelector('.card-nama').textContent.trim();
+            document.getElementById(`${cid}-wa`).href = buildWaLink(kol, nam, u, f);
+
+            btn.closest('.ukuran-overlay').querySelectorAll('.ukuran-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
         }
 
