@@ -148,16 +148,23 @@
         .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; display: block; }
 
         .ukuran-overlay {
-            position: absolute; bottom: 0.45rem; left: 0.45rem;
-            display: flex; flex-wrap: wrap; gap: 0.22rem; padding-right: 0.45rem;
+            display: flex; flex-wrap: wrap; gap: 0.28rem;
+            margin-bottom: 0.45rem;
         }
+        .ukuran-label {
+            font-size: 0.58rem; font-weight: 700; color: var(--muted);
+            text-transform: uppercase; letter-spacing: 0.08em;
+            margin-bottom: 0.28rem;
+            display: flex; align-items: center; gap: 0.35rem;
+        }
+        .ukuran-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
         .ukuran-btn {
-            font-size: 0.54rem; padding: 0.18rem 0.42rem; border-radius: 0.28rem;
-            background: rgba(253,250,245,0.93); border: 1px solid rgba(61,43,31,0.14);
-            color: #3D2B1F; font-weight: 700; font-family: 'DM Sans', sans-serif;
-            cursor: pointer; transition: background 0.15s, color 0.15s; letter-spacing: 0.02em;
+            font-size: 0.6rem; padding: 0.25rem 0.55rem; border-radius: 0.35rem;
+            background: var(--bg); border: 1.5px solid var(--border);
+            color: var(--text); font-weight: 700; font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: all 0.15s; letter-spacing: 0.02em;
         }
-        .dark .ukuran-btn { background: rgba(44,31,20,0.93); border-color: rgba(237,232,220,0.18); color: #EDE8DC; }
+        .ukuran-btn:hover:not(.selected) { border-color: var(--accent); color: var(--accent); }
         .ukuran-btn.selected { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 1px 4px rgba(196,113,74,0.35); }
 
         .card-body { padding: 0.6rem 0.7rem 0.7rem; display: flex; flex-direction: column; flex: 1; }
@@ -225,7 +232,7 @@
                          alt="Aneka Karpet Indah"
                          style="height:2.5rem;width:auto;object-fit:contain;display:block"
                          fetchpriority="high" decoding="async">
-                    <p class="brand-tagline">Katalog Resmi · Karpet Pilihan</p>
+                    <p class="brand-tagline">CV. Aneka Karpet Indah</p>
                 </div>
                 <button class="theme-btn" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
                     <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -360,11 +367,16 @@
                              alt="${item.nama}" loading="lazy" decoding="async"
                              onclick="openZoom(this.src)"
                              onerror="this.src='https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error'">
-                        <div class="ukuran-overlay">${ukuranBtns}</div>
                     </div>
                     <div class="card-body">
                         <p class="card-koleksi">${item.koleksi}</p>
                         <h3 class="card-nama">${item.nama}</h3>
+                        ${item.variasi.length > 1 ? `
+                        <div>
+                            <p class="ukuran-label">Pilih Ukuran</p>
+                            <div class="ukuran-overlay">${ukuranBtns}</div>
+                        </div>` : `
+                        <div class="ukuran-overlay">${ukuranBtns}</div>`}
                         <div class="card-footer">
                             <div>
                                 <p id="${cid}-h" class="card-price">Rp ${formatRupiah(def.harga)}</p>
