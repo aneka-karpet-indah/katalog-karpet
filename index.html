@@ -5,421 +5,437 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aneka Karpet Indah - Katalog Resmi</title>
 
-    <!-- PERF: Preconnect ke domain eksternal supaya koneksi lebih cepat -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://docs.google.com">
     <link rel="preconnect" href="https://i.ibb.co.com">
-
-    <!-- PERF: Preload logo karena ini LCP element -->
     <link rel="preload" as="image" href="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config = { darkMode: 'class' }</script>
 
     <style>
-        /* PERF: Hanya animate opacity, hindari layout thrashing */
-        .filter-btn.active { background-color: #3b82f6; color: white; border-color: #3b82f6; }
-        .ukuran-btn.selected { background-color: #3b82f6; color: white; border-color: #3b82f6; box-shadow: 0 2px 4px rgba(59,130,246,0.3); }
+        :root {
+            --bg:        #F5F0E8;
+            --surface:   #FDFAF5;
+            --border:    #DDD5C4;
+            --text:      #3D2B1F;
+            --muted:     #9B8B79;
+            --accent:    #C4714A;
+            --accent2:   #7A8C6E;
+            --header-bg: #FDFAF5;
+            --card-bg:   #FDFAF5;
+            --shadow:    rgba(61,43,31,0.10);
+        }
+        .dark {
+            --bg:        #201810;
+            --surface:   #2C1F14;
+            --border:    #4A3728;
+            --text:      #EDE8DC;
+            --muted:     #9B8B79;
+            --accent:    #D4856A;
+            --accent2:   #95A882;
+            --header-bg: #241A10;
+            --card-bg:   #2C1F14;
+            --shadow:    rgba(0,0,0,0.35);
+        }
 
-        #modal-zoom { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; cursor: zoom-out; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            padding-bottom: 5rem;
+            transition: background-color 0.3s, color 0.3s;
+            position: relative;
+        }
 
-        /* PERF: Gunakan will-change hanya pada elemen yang akan dianimasikan */
+        /* Subtle grain texture */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 0; opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 180px;
+        }
+
+        main, header { position: relative; z-index: 1; }
+
+        /* ── HEADER ── */
+        header {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 50;
+        }
+        .header-inner { padding: 0.85rem 1rem 0.75rem; }
+        .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.65rem; }
+        .brand-tagline {
+            font-size: 0.62rem; letter-spacing: 0.18em;
+            color: var(--muted); text-transform: uppercase; margin-top: 0.15rem;
+        }
+        .theme-btn {
+            width: 2.2rem; height: 2.2rem; border-radius: 50%;
+            border: 1.5px solid var(--border); background: var(--surface);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--muted);
+            transition: border-color 0.2s, color 0.2s; flex-shrink: 0;
+        }
+        .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .search-wrap { position: relative; margin-bottom: 0; }
+        .search-wrap input {
+            width: 100%; padding: 0.58rem 1rem 0.58rem 2.4rem;
+            border-radius: 999px; border: 1.5px solid var(--border);
+            background: var(--bg); color: var(--text);
+            font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-wrap input::placeholder { color: var(--muted); }
+        .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(196,113,74,0.12); }
+        .search-icon {
+            position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%);
+            color: var(--muted); width: 0.9rem; height: 0.9rem; pointer-events: none;
+        }
+
+        .filter-bar {
+            display: flex; gap: 0.45rem;
+            overflow-x: auto; padding: 0.65rem 1rem 0.75rem;
+            scrollbar-width: none;
+        }
+        .filter-bar::-webkit-scrollbar { display: none; }
+
+        .filter-btn {
+            white-space: nowrap; padding: 0.3rem 1rem;
+            border-radius: 999px; border: 1.5px solid var(--border);
+            background: var(--surface); color: var(--muted);
+            font-family: 'DM Sans', sans-serif; font-size: 0.68rem;
+            font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+            cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+        }
+        .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+        /* ── GRID ── */
+        .katalog-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem; padding: 1rem;
+            max-width: 960px; margin: 0 auto;
+        }
+        @media (min-width: 600px)  { .katalog-grid { grid-template-columns: repeat(3,1fr); } }
+        @media (min-width: 900px)  { .katalog-grid { grid-template-columns: repeat(4,1fr); } }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 1rem; overflow: hidden;
+            display: flex; flex-direction: column;
+            box-shadow: 0 2px 8px var(--shadow);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            contain: layout style;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px var(--shadow); }
+
+        .card-img-wrap {
+            position: relative; aspect-ratio: 3/4; overflow: hidden;
+            background-color: #E8E0D0;
+        }
+        .dark .card-img-wrap { background-color: #2a1e14; }
+        .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; display: block; }
+
+        .ukuran-overlay {
+            position: absolute; bottom: 0.45rem; left: 0.45rem;
+            display: flex; flex-wrap: wrap; gap: 0.22rem; padding-right: 0.45rem;
+        }
+        .ukuran-btn {
+            font-size: 0.54rem; padding: 0.18rem 0.42rem; border-radius: 0.28rem;
+            background: rgba(253,250,245,0.93); border: 1px solid rgba(61,43,31,0.14);
+            color: #3D2B1F; font-weight: 700; font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: background 0.15s, color 0.15s; letter-spacing: 0.02em;
+        }
+        .dark .ukuran-btn { background: rgba(44,31,20,0.93); border-color: rgba(237,232,220,0.18); color: #EDE8DC; }
+        .ukuran-btn.selected { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 1px 4px rgba(196,113,74,0.35); }
+
+        .card-body { padding: 0.6rem 0.7rem 0.7rem; display: flex; flex-direction: column; flex: 1; }
+        .card-koleksi {
+            font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 0.12rem;
+        }
+        .card-nama {
+            font-family: 'Playfair Display', serif; font-size: 0.78rem; font-weight: 700;
+            line-height: 1.3;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; margin-bottom: 0.4rem; color: var(--text);
+        }
+        .card-footer {
+            margin-top: auto; padding-top: 0.45rem;
+            border-top: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; gap: 0.4rem;
+        }
+        .card-price { font-family: 'Playfair Display', serif; font-size: 0.82rem; font-weight: 700; color: var(--text); font-style: italic; }
+        .card-stok  { font-size: 0.58rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+        .stok-ada   { color: var(--accent2); }
+        .stok-habis { color: #e05252; }
+
+        .wa-btn {
+            width: 1.9rem; height: 1.9rem; border-radius: 0.5rem;
+            background: var(--surface); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: transform 0.15s, box-shadow 0.15s; text-decoration: none;
+        }
+        .wa-btn:hover { transform: scale(1.12); box-shadow: 0 2px 8px var(--shadow); }
+
+        /* ── SKELETON ── */
+        .skeleton {
+            background: linear-gradient(90deg, var(--border) 25%, #f0ece4 50%, var(--border) 75%);
+            background-size: 200% 100%; animation: shimmer 1.6s infinite;
+        }
+        .dark .skeleton {
+            background: linear-gradient(90deg, #3a2a1e 25%, #4a3728 50%, #3a2a1e 75%);
+            background-size: 200% 100%;
+        }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+        /* ── LAZY IMG ── */
         .lazy-img { opacity: 0; transition: opacity 0.3s ease; will-change: opacity; }
         .lazy-img.loaded { opacity: 1; will-change: auto; }
 
-        /* PERF: Skeleton loader untuk placeholder yang lebih ringan dari gambar */
-        .skeleton {
-            background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
+        /* ── MODAL ── */
+        #modal-zoom {
+            display: none; position: fixed; inset: 0;
+            background: rgba(20,12,6,0.96); z-index: 100; cursor: zoom-out;
+            align-items: center; justify-content: center;
         }
-        .dark .skeleton {
-            background: linear-gradient(90deg, #27272a 25%, #3f3f46 50%, #27272a 75%);
-            background-size: 200% 100%;
-        }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        #img-zoom { max-width: 92vw; max-height: 92vh; object-fit: contain; border-radius: 0.75rem; }
 
-        /* PERF: Batasi card animation agar tidak berlebihan */
-        .card-item { contain: layout style; }
-        .card-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-2px); transition: box-shadow 0.2s, transform 0.2s; }
-
-        /* PERF: Paksa GPU layer hanya pada image container */
-        .img-wrap { transform: translateZ(0); }
+        .ornament { text-align: center; color: var(--accent); font-size: 1rem; letter-spacing: 0.4em; margin: 0.25rem 0 0; opacity: 0.4; }
+        #status-text { text-align: center; color: var(--muted); font-size: 0.7rem; margin: 0.3rem 0 0.5rem; }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-zinc-900 min-h-screen pb-20 font-sans transition-colors duration-300 text-gray-800 dark:text-gray-200">
-
-    <header class="bg-white dark:bg-zinc-800 shadow-md sticky top-0 z-50">
-        <div class="p-4 flex flex-col gap-3">
-            <div class="relative flex items-center justify-center min-h-[48px]">
-                <!-- PERF: fetchpriority=high untuk LCP image -->
-                <img src="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg"
-                     alt="Aneka Karpet Indah"
-                     class="h-12 w-auto object-contain"
-                     fetchpriority="high"
-                     decoding="async"
-                     style="opacity:1">
-
-                <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
-                        class="absolute right-0 p-2 rounded-xl bg-gray-100 dark:bg-zinc-700 text-gray-800 dark:text-yellow-400">
-                    <svg id="theme-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+<body>
+    <header>
+        <div class="header-inner">
+            <div class="brand-row">
+                <div>
+                    <img src="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg"
+                         alt="Aneka Karpet Indah"
+                         style="height:2.5rem;width:auto;object-fit:contain;display:block"
+                         fetchpriority="high" decoding="async">
+                    <p class="brand-tagline">Katalog Resmi · Karpet Pilihan</p>
+                </div>
+                <button class="theme-btn" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+                    <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
                     </svg>
                 </button>
             </div>
-
-            <!-- PERF: debounce pada search agar tidak re-render tiap keystroke -->
-            <div class="relative">
-                <input type="search" id="search-input" placeholder="Cari merk atau motif..."
-                       class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-gray-50 dark:bg-zinc-700 border-none focus:ring-2 focus:ring-blue-500 text-sm"
-                       autocomplete="off" autocorrect="off" spellcheck="false">
-                <svg class="w-4 h-4 absolute left-3.5 top-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            <div class="search-wrap">
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
+                <input type="search" id="search-input" placeholder="Cari merk atau motif..."
+                       autocomplete="off" autocorrect="off" spellcheck="false">
             </div>
         </div>
-        <div id="filter-bar" class="flex gap-2 overflow-x-auto px-4 pb-4 no-scrollbar">
-            <button class="filter-btn active whitespace-nowrap px-6 py-2 rounded-full border border-gray-200 dark:border-zinc-700 text-xs font-bold bg-white dark:bg-zinc-800 uppercase">SEMUA</button>
+        <div class="filter-bar" id="filter-bar">
+            <button class="filter-btn active">SEMUA</button>
         </div>
     </header>
 
-    <main class="p-3 max-w-5xl mx-auto">
-        <!-- PERF: Skeleton awal ditampilkan sebelum data datang -->
-        <div id="katalog-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <!-- Skeleton cards -->
-            <div class="bg-white dark:bg-zinc-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-zinc-700 flex flex-col">
-                <div class="aspect-[3/4] skeleton"></div>
-                <div class="p-3 flex flex-col gap-2">
-                    <div class="h-2 w-16 skeleton rounded"></div>
-                    <div class="h-3 w-full skeleton rounded"></div>
-                    <div class="h-3 w-3/4 skeleton rounded"></div>
-                    <div class="h-4 w-24 skeleton rounded mt-2"></div>
-                </div>
-            </div>
-            <div class="bg-white dark:bg-zinc-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-zinc-700 flex flex-col">
-                <div class="aspect-[3/4] skeleton"></div>
-                <div class="p-3 flex flex-col gap-2">
-                    <div class="h-2 w-16 skeleton rounded"></div>
-                    <div class="h-3 w-full skeleton rounded"></div>
-                    <div class="h-3 w-3/4 skeleton rounded"></div>
-                    <div class="h-4 w-24 skeleton rounded mt-2"></div>
-                </div>
-            </div>
-            <div class="hidden md:flex bg-white dark:bg-zinc-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-zinc-700 flex-col">
-                <div class="aspect-[3/4] skeleton"></div>
-                <div class="p-3 flex flex-col gap-2">
-                    <div class="h-2 w-16 skeleton rounded"></div>
-                    <div class="h-3 w-full skeleton rounded"></div>
-                    <div class="h-3 w-3/4 skeleton rounded"></div>
-                    <div class="h-4 w-24 skeleton rounded mt-2"></div>
-                </div>
-            </div>
-            <div class="hidden lg:flex bg-white dark:bg-zinc-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-zinc-700 flex-col">
-                <div class="aspect-[3/4] skeleton"></div>
-                <div class="p-3 flex flex-col gap-2">
-                    <div class="h-2 w-16 skeleton rounded"></div>
-                    <div class="h-3 w-full skeleton rounded"></div>
-                    <div class="h-3 w-3/4 skeleton rounded"></div>
-                    <div class="h-4 w-24 skeleton rounded mt-2"></div>
-                </div>
-            </div>
+    <main>
+        <div class="katalog-grid" id="katalog-container">
+            <div class="card"><div class="card-img-wrap skeleton" style="aspect-ratio:3/4"></div><div class="card-body" style="gap:0.4rem"><div class="skeleton" style="height:0.5rem;width:40%;border-radius:4px"></div><div class="skeleton" style="height:0.75rem;width:90%;border-radius:4px"></div><div class="skeleton" style="height:0.75rem;width:65%;border-radius:4px"></div><div class="skeleton" style="height:1rem;width:55%;border-radius:4px;margin-top:0.4rem"></div></div></div>
+            <div class="card"><div class="card-img-wrap skeleton" style="aspect-ratio:3/4"></div><div class="card-body" style="gap:0.4rem"><div class="skeleton" style="height:0.5rem;width:40%;border-radius:4px"></div><div class="skeleton" style="height:0.75rem;width:90%;border-radius:4px"></div><div class="skeleton" style="height:0.75rem;width:65%;border-radius:4px"></div><div class="skeleton" style="height:1rem;width:55%;border-radius:4px;margin-top:0.4rem"></div></div></div>
         </div>
-
-        <!-- Status teks -->
-        <p id="status-text" class="text-center text-gray-400 text-xs mt-4 hidden"></p>
+        <p class="ornament" id="ornament" style="display:none">— ✦ —</p>
+        <p id="status-text" style="display:none"></p>
     </main>
 
-    <!-- Modal zoom -->
-    <div id="modal-zoom" onclick="closeZoom()" role="dialog" aria-modal="true" aria-label="Zoom gambar">
-        <img id="img-zoom" class="w-full h-full object-contain p-4" style="opacity:1" src="" alt="Zoom produk" loading="lazy" decoding="async">
+    <div id="modal-zoom" onclick="closeZoom()" role="dialog" aria-modal="true">
+        <img id="img-zoom" src="" alt="Zoom produk" loading="lazy" decoding="async">
     </div>
 
-    <!-- PERF: WhatsApp icon di-inline sebagai SVG, hapus request gambar eksternal -->
-    <svg id="wa-svg-src" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-        <path fill="#25D366" d="M4.9 43.3l2.7-9.9C5.9 30.6 5 27.4 5 24 5 13.5 13.5 5 24 5s19 8.5 19 19-8.5 19-19 19c-3.2 0-6.2-.8-8.8-2.3L4.9 43.3z"/>
-        <path fill="#fff" d="M33.7 28.3c-.4-.2-2.3-1.1-2.6-1.3-.3-.1-.6-.2-.9.2-.3.4-1 1.3-1.3 1.5-.2.3-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1-2-2.3-2.2-2.7-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.2-.4.3-.7.1-.2 0-.5-.1-.7-.1-.2-1-2.3-1.3-3.1-.3-.8-.7-.7-1-.7h-.8c-.3 0-.7.1-1 .5s-1.4 1.4-1.4 3.3 1.4 3.8 1.6 4.1c.2.3 2.8 4.3 6.8 6 .9.4 1.7.6 2.2.8.9.3 1.8.2 2.4.1.7-.1 2.3-.9 2.6-1.8.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5z"/>
-    </svg>
-
     <script>
-        const SHEET_ID = '1iLJWtfJntcjZalA7q-FFIUNe8BXGT40za7kMeELXfJk';
+        const SHEET_ID  = '1iLJWtfJntcjZalA7q-FFIUNe8BXGT40za7kMeELXfJk';
         const WA_NUMBER = '628XXXXXXXXXX'; // GANTI NOMOR WHATSAPP ANDA
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+        const CACHE_KEY = 'aki_katalog_v2';
+        const CACHE_TTL = 5 * 60 * 1000;
 
-        // PERF: Cache data di sessionStorage supaya reload tab tidak fetch ulang
-        const CACHE_KEY = 'aki_katalog_v1';
-        const CACHE_TTL = 5 * 60 * 1000; // 5 menit
+        let semuaProduk = [], lazyObserver = null;
 
-        let semuaProduk = [];
-        let activeFilter = 'Semua';
+        const WA_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 48 48"><path fill="#25D366" d="M4.9 43.3l2.7-9.9C5.9 30.6 5 27.4 5 24 5 13.5 13.5 5 24 5s19 8.5 19 19-8.5 19-19 19c-3.2 0-6.2-.8-8.8-2.3L4.9 43.3z"/><path fill="#fff" d="M33.7 28.3c-.4-.2-2.3-1.1-2.6-1.3-.3-.1-.6-.2-.9.2-.3.4-1 1.3-1.3 1.5-.2.3-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1-2-2.3-2.2-2.7-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.2-.4.3-.7.1-.2 0-.5-.1-.7-.1-.2-1-2.3-1.3-3.1-.3-.8-.7-.7-1-.7h-.8c-.3 0-.7.1-1 .5s-1.4 1.4-1.4 3.3 1.4 3.8 1.6 4.1c.2.3 2.8 4.3 6.8 6 .9.4 1.7.6 2.2.8.9.3 1.8.2 2.4.1.7-.1 2.3-.9 2.6-1.8.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5z"/></svg>`;
 
-        // PERF: Satu IntersectionObserver global, bukan dibuat ulang tiap render
-        let lazyObserver = null;
-
-        function formatRupiah(angka) {
-            return parseInt(angka).toLocaleString('id-ID');
-        }
-
-        // PERF: Debounce search agar tidak render tiap karakter
-        function debounce(fn, delay) {
-            let t;
-            return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), delay); };
-        }
+        function formatRupiah(n) { return parseInt(n).toLocaleString('id-ID'); }
+        function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 
         document.getElementById('search-input').addEventListener('input', debounce(cariProduk, 250));
 
         async function ambilData() {
-            // Cek cache dulu
             try {
                 const cached = sessionStorage.getItem(CACHE_KEY);
                 if (cached) {
                     const { ts, data } = JSON.parse(cached);
                     if (Date.now() - ts < CACHE_TTL) {
                         semuaProduk = data;
-                        buatTombolFilter();
-                        tampilkanKatalog(semuaProduk);
-                        setStatus(`${semuaProduk.length} produk dimuat dari cache`);
-                        return;
+                        buatTombolFilter(); tampilkanKatalog(semuaProduk);
+                        setStatus(`${semuaProduk.length} produk tersedia`); return;
                     }
                 }
             } catch (_) {}
 
             try {
-                const res = await fetch(SHEET_URL);
-                const txt = await res.text();
+                const res  = await fetch(SHEET_URL);
+                const txt  = await res.text();
                 const json = JSON.parse(txt.substring(47, txt.length - 2));
-                const rows = json.table.rows;
+                let tempGroup = {}, uid = 0;
 
-                let tempGroup = {};
-                let uniqueID = 0;
-
-                rows.forEach(row => {
+                json.table.rows.forEach(row => {
                     if (!row.c[0]) return;
-                    const koleksi = row.c[0] ? String(row.c[0].v) : 'Lainnya';
+                    const koleksi = String(row.c[0].v);
                     const namaRaw = row.c[1] ? String(row.c[1].v).trim() : '';
                     const ukuran  = row.c[2] ? String(row.c[2].v) : '-';
                     const harga   = row.c[3] ? row.c[3].v : 0;
                     const stok    = row.c[4] ? row.c[4].v : 0;
                     const foto    = row.c[5] ? String(row.c[5].v) : '';
-
-                    let id;
-                    if (namaRaw === '' || namaRaw === '-' || namaRaw.toLowerCase() === 'motif baru') {
-                        id = `standalone-${uniqueID++}`;
-                    } else {
-                        id = `${koleksi}-${namaRaw}`;
-                    }
-
-                    if (!tempGroup[id]) {
-                        tempGroup[id] = { koleksi, nama: namaRaw || 'Motif Baru', fotoUtama: foto, variasi: [] };
-                    }
-
-                    const fotoFinal = (foto && foto !== '' && foto !== '-') ? foto : tempGroup[id].fotoUtama;
+                    const isStandalone = namaRaw === '' || namaRaw === '-' || namaRaw.toLowerCase() === 'motif baru';
+                    const id = isStandalone ? `standalone-${uid++}` : `${koleksi}-${namaRaw}`;
+                    if (!tempGroup[id]) tempGroup[id] = { koleksi, nama: namaRaw || 'Motif Baru', fotoUtama: foto, variasi: [] };
+                    const fotoFinal = (foto && foto !== '-') ? foto : tempGroup[id].fotoUtama;
                     tempGroup[id].variasi.push({ ukuran, harga, stok, foto: fotoFinal });
                 });
 
                 semuaProduk = Object.values(tempGroup);
-
-                // Simpan ke cache
-                try {
-                    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: semuaProduk }));
-                } catch (_) {}
-
-                buatTombolFilter();
-                tampilkanKatalog(semuaProduk);
+                try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: semuaProduk })); } catch(_) {}
+                buatTombolFilter(); tampilkanKatalog(semuaProduk);
                 setStatus(`${semuaProduk.length} produk tersedia`);
-
             } catch (err) {
                 document.getElementById('katalog-container').innerHTML =
-                    `<p class="col-span-full py-20 text-center text-red-400 italic">Gagal memuat data. Coba refresh halaman.</p>`;
+                    `<p style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted);font-style:italic">Gagal memuat data. Coba refresh halaman.</p>`;
             }
         }
 
         function setStatus(msg) {
-            const el = document.getElementById('status-text');
-            el.textContent = msg;
-            el.classList.remove('hidden');
+            document.getElementById('status-text').textContent = msg;
+            document.getElementById('status-text').style.display = 'block';
+            document.getElementById('ornament').style.display = 'block';
         }
 
-        // PERF: Bangun HTML via array join, bukan innerHTML += (hindari re-parse DOM berulang)
         function tampilkanKatalog(data) {
-            // Reset observer lama
             if (lazyObserver) lazyObserver.disconnect();
-
             const container = document.getElementById('katalog-container');
-
-            if (data.length === 0) {
-                container.innerHTML = `<p class="col-span-full py-20 text-center text-gray-400 italic">Produk tidak ditemukan.</p>`;
+            if (!data.length) {
+                container.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted);font-style:italic">Produk tidak ditemukan.</p>`;
                 return;
             }
-
-            const waIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-5 h-5"><path fill="#25D366" d="M4.9 43.3l2.7-9.9C5.9 30.6 5 27.4 5 24 5 13.5 13.5 5 24 5s19 8.5 19 19-8.5 19-19 19c-3.2 0-6.2-.8-8.8-2.3L4.9 43.3z"/><path fill="#fff" d="M33.7 28.3c-.4-.2-2.3-1.1-2.6-1.3-.3-.1-.6-.2-.9.2-.3.4-1 1.3-1.3 1.5-.2.3-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1-2-2.3-2.2-2.7-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.2-.4.3-.7.1-.2 0-.5-.1-.7-.1-.2-1-2.3-1.3-3.1-.3-.8-.7-.7-1-.7h-.8c-.3 0-.7.1-1 .5s-1.4 1.4-1.4 3.3 1.4 3.8 1.6 4.1c.2.3 2.8 4.3 6.8 6 .9.4 1.7.6 2.2.8.9.3 1.8.2 2.4.1.7-.1 2.3-.9 2.6-1.8.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5z"/></svg>`;
-
-            const html = data.map((item, index) => {
-                const cid = `c${index}`;
-                const def = item.variasi[0];
-                const stokClass = def.stok != '0' ? 'text-green-600' : 'text-red-500';
-                const waLink = buildWaLink(item.koleksi, item.nama, def.ukuran, def.foto);
-
-                const ukuranBtns = item.variasi.map((v, i) =>
-                    `<button onclick="updVar('${cid}','${v.ukuran}','${v.harga}','${v.stok}',this,'${v.foto}')"
-                             class="ukuran-btn text-[9px] px-2 py-1 rounded bg-white/90 dark:bg-zinc-800/90 font-bold border dark:border-zinc-600 dark:text-white ${i===0?'selected':''}"
-                             data-ukuran="${v.ukuran}">
-                        ${v.ukuran}
-                    </button>`
+            container.innerHTML = data.map((item, idx) => {
+                const cid = `c${idx}`, def = item.variasi[0];
+                const ukuranBtns = item.variasi.map((v,i) =>
+                    `<button class="ukuran-btn ${i===0?'selected':''}" onclick="updVar('${cid}','${v.ukuran}','${v.harga}','${v.stok}',this,'${v.foto}')">${v.ukuran}</button>`
                 ).join('');
-
                 return `
-                <div class="card-item bg-white dark:bg-zinc-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-zinc-700 flex flex-col">
-                    <div class="img-wrap relative aspect-[3/4] overflow-hidden">
-                        <img id="${cid}-img"
+                <div class="card">
+                    <div class="card-img-wrap">
+                        <img id="${cid}-img" class="lazy-img"
                              data-src="${def.foto}"
                              src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                             class="lazy-img w-full h-full object-cover cursor-zoom-in"
+                             alt="${item.nama}" loading="lazy" decoding="async"
                              onclick="openZoom(this.src)"
-                             loading="lazy"
-                             decoding="async"
-                             alt="${item.nama}"
-                             onerror="this.src='https://placehold.co/400x500/e5e7eb/9ca3af?text=Foto+Error'">
-                        <div class="absolute bottom-2 left-2 flex flex-wrap gap-1 pr-8">
-                            ${ukuranBtns}
-                        </div>
+                             onerror="this.src='https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error'">
+                        <div class="ukuran-overlay">${ukuranBtns}</div>
                     </div>
-                    <div class="p-3 flex flex-col flex-grow text-gray-900 dark:text-gray-100">
-                        <p class="text-[9px] font-black text-blue-500 uppercase tracking-tighter">${item.koleksi}</p>
-                        <h3 class="text-xs font-bold mb-2 uppercase line-clamp-2 leading-tight">${item.nama}</h3>
-                        <div class="mt-auto pt-2 border-t dark:border-zinc-700">
-                            <p id="${cid}-h" class="text-sm font-black italic text-gray-900 dark:text-white">Rp ${formatRupiah(def.harga)}</p>
-                            <div class="flex items-center justify-between mt-2">
-                                <span id="${cid}-s" class="text-[9px] font-bold ${stokClass} uppercase">● STOK: ${def.stok}</span>
-                                <a id="${cid}-wa" href="${waLink}" target="_blank" rel="noopener noreferrer"
-                                   class="bg-white border border-gray-100 shadow-sm p-1 rounded-lg hover:scale-110 transition-transform flex items-center justify-center"
-                                   aria-label="Tanya via WhatsApp">
-                                    ${waIcon}
-                                </a>
+                    <div class="card-body">
+                        <p class="card-koleksi">${item.koleksi}</p>
+                        <h3 class="card-nama">${item.nama}</h3>
+                        <div class="card-footer">
+                            <div>
+                                <p id="${cid}-h" class="card-price">Rp ${formatRupiah(def.harga)}</p>
+                                <span id="${cid}-s" class="card-stok ${def.stok!=0?'stok-ada':'stok-habis'}">● Stok: ${def.stok}</span>
                             </div>
+                            <a id="${cid}-wa" href="${buildWaLink(item.koleksi,item.nama,def.ukuran,def.foto)}"
+                               class="wa-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">${WA_ICON}</a>
                         </div>
                     </div>
                 </div>`;
-            });
-
-            container.innerHTML = html.join('');
+            }).join('');
             initLazyLoading();
         }
 
-        function buildWaLink(koleksi, nama, ukuran, foto) {
-            const msg = encodeURIComponent(`Halo Aneka Karpet Indah, saya mau tanya karpet ${koleksi} ${nama} ukuran ${ukuran}.\nFoto: ${foto}`);
-            return `https://wa.me/${WA_NUMBER}?text=${msg}`;
+        function buildWaLink(k,n,u,f) {
+            return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Halo Aneka Karpet Indah, saya mau tanya karpet ${k} ${n} ukuran ${u}.\nFoto: ${f}`)}`;
         }
 
-        // PERF: Observer global, rootMargin lebih besar agar prefetch lebih awal
         function initLazyLoading() {
             lazyObserver = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) return;
-                    const img = entry.target;
-                    const src = img.getAttribute('data-src');
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    const img = e.target, src = img.getAttribute('data-src');
                     if (!src) return;
                     img.src = src;
-                    img.onload = () => img.classList.add('loaded');
-                    img.onerror = () => { img.src = 'https://placehold.co/400x500/e5e7eb/9ca3af?text=Foto+Error'; img.classList.add('loaded'); };
+                    img.onload  = () => img.classList.add('loaded');
+                    img.onerror = () => { img.src='https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error'; img.classList.add('loaded'); };
                     obs.unobserve(img);
                 });
-            }, { rootMargin: '200px 0px' }); // PERF: Load gambar 200px sebelum masuk viewport
-
+            }, { rootMargin: '200px 0px' });
             document.querySelectorAll('.lazy-img').forEach(img => lazyObserver.observe(img));
         }
 
-        function updVar(cid, u, h, s, btn, f) {
+        function updVar(cid,u,h,s,btn,f) {
             const img = document.getElementById(`${cid}-img`);
-            img.classList.remove('loaded');
-            img.src = f;
-            img.onload = () => img.classList.add('loaded');
-            img.onerror = () => { img.src = 'https://placehold.co/400x500/e5e7eb/9ca3af?text=Foto+Error'; img.classList.add('loaded'); };
-
+            img.classList.remove('loaded'); img.src = f;
+            img.onload  = () => img.classList.add('loaded');
+            img.onerror = () => { img.src='https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error'; img.classList.add('loaded'); };
             document.getElementById(`${cid}-h`).textContent = `Rp ${formatRupiah(h)}`;
-
             const sel = document.getElementById(`${cid}-s`);
-            sel.textContent = `● STOK: ${s}`;
-            sel.className = `text-[9px] font-bold ${s != '0' ? 'text-green-600' : 'text-red-500'} uppercase`;
-
-            // Update WA link
-            const card = btn.closest('.card-item');
-            const kol  = card.querySelector('p').textContent.trim();
-            const nam  = card.querySelector('h3').textContent.trim();
-            document.getElementById(`${cid}-wa`).href = buildWaLink(kol, nam, u, f);
-
-            btn.parentElement.querySelectorAll('.ukuran-btn').forEach(b => b.classList.remove('selected'));
+            sel.textContent = `● Stok: ${s}`; sel.className = `card-stok ${s!=0?'stok-ada':'stok-habis'}`;
+            const card = btn.closest('.card');
+            document.getElementById(`${cid}-wa`).href = buildWaLink(
+                card.querySelector('.card-koleksi').textContent.trim(),
+                card.querySelector('.card-nama').textContent.trim(), u, f);
+            btn.closest('.ukuran-overlay').querySelectorAll('.ukuran-btn').forEach(b=>b.classList.remove('selected'));
             btn.classList.add('selected');
         }
 
         function buatTombolFilter() {
-            const bar = document.getElementById('filter-bar');
-            const list = [...new Set(semuaProduk.map(p => p.koleksi))];
-
-            // PERF: Build DOM fragment, bukan innerHTML loop
-            const frag = document.createDocumentFragment();
-
-            const btnSemua = document.createElement('button');
-            btnSemua.textContent = 'SEMUA';
-            btnSemua.className = 'filter-btn active whitespace-nowrap px-6 py-2 rounded-full border border-gray-200 dark:border-zinc-700 text-xs font-bold transition bg-white dark:bg-zinc-800 uppercase';
-            btnSemua.onclick = (e) => filterKoleksi('Semua', e.currentTarget);
-            frag.appendChild(btnSemua);
-
-            list.forEach(k => {
+            const bar = document.getElementById('filter-bar'), frag = document.createDocumentFragment();
+            const all = document.createElement('button');
+            all.textContent='SEMUA'; all.className='filter-btn active';
+            all.onclick = e => filterKoleksi('Semua', e.currentTarget); frag.appendChild(all);
+            [...new Set(semuaProduk.map(p=>p.koleksi))].forEach(k => {
                 const btn = document.createElement('button');
-                btn.textContent = k.toUpperCase();
-                btn.className = 'filter-btn whitespace-nowrap px-6 py-2 rounded-full border border-gray-200 dark:border-zinc-700 text-xs font-bold transition bg-white dark:bg-zinc-800 uppercase';
-                btn.onclick = (e) => filterKoleksi(k, e.currentTarget);
-                frag.appendChild(btn);
+                btn.textContent=k.toUpperCase(); btn.className='filter-btn';
+                btn.onclick = e => filterKoleksi(k, e.currentTarget); frag.appendChild(btn);
             });
-
-            bar.innerHTML = '';
-            bar.appendChild(frag);
+            bar.innerHTML=''; bar.appendChild(frag);
         }
 
         function filterKoleksi(kat, btn) {
-            activeFilter = kat;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
             btn.classList.add('active');
-            const filtered = kat === 'Semua' ? semuaProduk : semuaProduk.filter(p => p.koleksi === kat);
-            tampilkanKatalog(filtered);
+            tampilkanKatalog(kat==='Semua' ? semuaProduk : semuaProduk.filter(p=>p.koleksi===kat));
         }
 
         function cariProduk() {
             const key = document.getElementById('search-input').value.toLowerCase().trim();
-            const filtered = semuaProduk.filter(p =>
-                p.nama.toLowerCase().includes(key) || p.koleksi.toLowerCase().includes(key)
-            );
-            tampilkanKatalog(filtered);
-            setStatus(key ? `${filtered.length} produk ditemukan untuk "${key}"` : `${semuaProduk.length} produk tersedia`);
+            const f = semuaProduk.filter(p=>p.nama.toLowerCase().includes(key)||p.koleksi.toLowerCase().includes(key));
+            tampilkanKatalog(f);
+            setStatus(key ? `${f.length} produk ditemukan untuk "${key}"` : `${semuaProduk.length} produk tersedia`);
         }
 
-        function openZoom(s) {
-            const modal = document.getElementById('modal-zoom');
-            document.getElementById('img-zoom').src = s;
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Cegah scroll saat modal terbuka
-        }
-
-        function closeZoom() {
-            document.getElementById('modal-zoom').style.display = 'none';
-            document.body.style.overflow = '';
-        }
-
-        // Tutup modal dengan tombol Escape
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeZoom(); });
+        function openZoom(s) { document.getElementById('img-zoom').src=s; document.getElementById('modal-zoom').style.display='flex'; document.body.style.overflow='hidden'; }
+        function closeZoom() { document.getElementById('modal-zoom').style.display='none'; document.body.style.overflow=''; }
+        document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeZoom(); });
 
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark')?'dark':'light');
         }
+        if (localStorage.getItem('theme')==='dark') document.documentElement.classList.add('dark');
 
-        // Apply saved theme sebelum render agar tidak flicker
-        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
-
-        // PERF: Jalankan setelah browser selesai parse HTML
         ambilData();
     </script>
 </body>
