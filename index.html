@@ -274,6 +274,19 @@
         </div>
         <p class="ornament" id="ornament" style="display:none">— ✦ —</p>
         <p id="status-text" style="display:none"></p>
+
+        <!-- Tombol Muat Lebih Banyak -->
+        <div id="load-more-wrap" style="display:none; text-align:center; padding: 1rem 1rem 2rem;">
+            <button id="load-more-btn" onclick="muatLebihBanyak()"
+                    style="padding:0.65rem 2.2rem; background:var(--surface); color:var(--accent);
+                           border: 1.5px solid var(--accent); border-radius:999px;
+                           font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:700;
+                           letter-spacing:0.06em; text-transform:uppercase; cursor:pointer;
+                           transition: background 0.2s, color 0.2s;">
+                Muat Lebih Banyak
+            </button>
+            <p id="load-more-info" style="margin-top:0.5rem; font-size:0.68rem; color:var(--muted);"></p>
+        </div>
     </main>
 
     <div id="modal-zoom" onclick="closeZoom()" role="dialog" aria-modal="true">
@@ -288,6 +301,9 @@
         const CACHE_TTL = 5 * 60 * 1000;
 
         let semuaProduk = [], lazyObserver = null;
+        let dataTampil = [];   // data yang sedang aktif (hasil filter/search)
+        let halamanSaat = 0;   // halaman yang sudah ditampilkan
+        const PER_HALAMAN = 24; // jumlah produk per batch
 
         const WA_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 48 48"><path fill="#25D366" d="M4.9 43.3l2.7-9.9C5.9 30.6 5 27.4 5 24 5 13.5 13.5 5 24 5s19 8.5 19 19-8.5 19-19 19c-3.2 0-6.2-.8-8.8-2.3L4.9 43.3z"/><path fill="#fff" d="M33.7 28.3c-.4-.2-2.3-1.1-2.6-1.3-.3-.1-.6-.2-.9.2-.3.4-1 1.3-1.3 1.5-.2.3-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1-2-2.3-2.2-2.7-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.2-.4.3-.7.1-.2 0-.5-.1-.7-.1-.2-1-2.3-1.3-3.1-.3-.8-.7-.7-1-.7h-.8c-.3 0-.7.1-1 .5s-1.4 1.4-1.4 3.3 1.4 3.8 1.6 4.1c.2.3 2.8 4.3 6.8 6 .9.4 1.7.6 2.2.8.9.3 1.8.2 2.4.1.7-.1 2.3-.9 2.6-1.8.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5z"/></svg>`;
 
@@ -347,48 +363,97 @@
         }
 
         function tampilkanKatalog(data) {
+            // Reset state pagination setiap kali filter/search berubah
+            dataTampil   = data;
+            halamanSaat  = 0;
             if (lazyObserver) lazyObserver.disconnect();
+
             const container = document.getElementById('katalog-container');
             if (!data.length) {
                 container.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted);font-style:italic">Produk tidak ditemukan.</p>`;
+                updateLoadMore();
                 return;
             }
-            container.innerHTML = data.map((item, idx) => {
-                const cid = `c${idx}`, def = item.variasi[0];
-                const ukuranBtns = item.variasi.map((v,i) =>
-                    `<button class="ukuran-btn ${i===0?'selected':''}" onclick="updVar('${cid}','${v.ukuran}','${v.harga}','${v.stok}',this,'${v.foto}')">${v.ukuran}</button>`
-                ).join('');
-                return `
-                <div class="card">
-                    <div class="card-img-wrap">
-                        <img id="${cid}-img" class="lazy-img"
-                             data-src="${def.foto}"
-                             src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                             alt="${item.nama}" loading="lazy" decoding="async"
-                             onclick="openZoom(this.src)"
-                             onerror="this.src='https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error'">
-                    </div>
-                    <div class="card-body">
-                        <p class="card-koleksi">${item.koleksi}</p>
-                        <h3 class="card-nama">${item.nama}</h3>
-                        ${item.variasi.length > 1 ? `
-                        <div>
-                            <p class="ukuran-label">Pilih Ukuran</p>
-                            <div class="ukuran-overlay">${ukuranBtns}</div>
-                        </div>` : `
-                        <div class="ukuran-overlay">${ukuranBtns}</div>`}
-                        <div class="card-footer">
-                            <div>
-                                <p id="${cid}-h" class="card-price">Rp ${formatRupiah(def.harga)}</p>
-                                <span id="${cid}-s" class="card-stok ${def.stok!=0?'stok-ada':'stok-habis'}">● Stok: ${def.stok}</span>
-                            </div>
-                            <a id="${cid}-wa" href="${buildWaLink(item.koleksi,item.nama,def.ukuran,def.foto)}"
-                               class="wa-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">${WA_ICON}</a>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
+
+            container.innerHTML = '';
+            renderBatch();
+        }
+
+        function renderBatch() {
+            const container = document.getElementById('katalog-container');
+            const mulai = halamanSaat * PER_HALAMAN;
+            const batch = dataTampil.slice(mulai, mulai + PER_HALAMAN);
+
+            // Hitung offset index agar id card unik antar batch
+            const html = batch.map((item, i) => buatCardHTML(item, mulai + i)).join('');
+            container.insertAdjacentHTML('beforeend', html);
+
+            halamanSaat++;
             initLazyLoading();
+            updateLoadMore();
+        }
+
+        function updateLoadMore() {
+            const wrap = document.getElementById('load-more-wrap');
+            const info = document.getElementById('load-more-info');
+            const sudahTampil = Math.min(halamanSaat * PER_HALAMAN, dataTampil.length);
+            const sisa = dataTampil.length - sudahTampil;
+
+            if (sisa > 0) {
+                wrap.style.display = 'block';
+                info.textContent = `Menampilkan ${sudahTampil} dari ${dataTampil.length} produk`;
+            } else {
+                wrap.style.display = dataTampil.length > PER_HALAMAN ? 'block' : 'none';
+                if (dataTampil.length > PER_HALAMAN) {
+                    document.getElementById('load-more-btn').style.display = 'none';
+                    info.textContent = `Semua ${dataTampil.length} produk sudah ditampilkan`;
+                }
+            }
+        }
+
+        function muatLebihBanyak() {
+            renderBatch();
+            // Scroll sedikit ke bawah agar customer tahu konten baru muncul
+            const container = document.getElementById('katalog-container');
+            const cards = container.querySelectorAll('.card');
+            const cardBaru = cards[halamanSaat * PER_HALAMAN - PER_HALAMAN];
+            if (cardBaru) cardBaru.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function buatCardHTML(item, idx) {
+            const cid = `c${idx}`, def = item.variasi[0];
+            const ukuranBtns = item.variasi.map((v, i) =>
+                `<button class="ukuran-btn ${i===0?'selected':''}" onclick="updVar('${cid}','${v.ukuran}','${v.harga}','${v.stok}',this,'${v.foto}')">${v.ukuran}</button>`
+            ).join('');
+            return `
+            <div class="card">
+                <div class="card-img-wrap">
+                    <img id="${cid}-img" class="lazy-img"
+                         data-src="${def.foto}"
+                         src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                         alt="${item.nama}" loading="lazy" decoding="async"
+                         onclick="openZoom(this.src)"
+                         onerror="this.src='https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error'">
+                </div>
+                <div class="card-body">
+                    <p class="card-koleksi">${item.koleksi}</p>
+                    <h3 class="card-nama">${item.nama}</h3>
+                    ${item.variasi.length > 1 ? `
+                    <div>
+                        <p class="ukuran-label">Pilih Ukuran</p>
+                        <div class="ukuran-overlay">${ukuranBtns}</div>
+                    </div>` : `
+                    <div class="ukuran-overlay">${ukuranBtns}</div>`}
+                    <div class="card-footer">
+                        <div>
+                            <p id="${cid}-h" class="card-price">Rp ${formatRupiah(def.harga)}</p>
+                            <span id="${cid}-s" class="card-stok ${def.stok!=0?'stok-ada':'stok-habis'}">● Stok: ${def.stok}</span>
+                        </div>
+                        <a id="${cid}-wa" href="${buildWaLink(item.koleksi,item.nama,def.ukuran,def.foto)}"
+                           class="wa-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">${WA_ICON}</a>
+                    </div>
+                </div>
+            </div>`;
         }
 
         function buildWaLink(k, n, u, f) {
@@ -476,12 +541,14 @@
             document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
             btn.classList.add('active');
             const result = getFilteredData();
+            document.getElementById('load-more-btn').style.display = 'inline-block';
             tampilkanKatalog(result);
             setStatus(`${result.length} produk ditemukan`);
         }
 
         function cariProduk() {
             const result = getFilteredData();
+            document.getElementById('load-more-btn').style.display = 'inline-block';
             tampilkanKatalog(result);
             const keyword = document.getElementById('search-input').value.trim();
             setStatus(keyword ? `${result.length} produk ditemukan untuk "${keyword}"` : `${result.length} produk tersedia`);
@@ -489,6 +556,7 @@
 
         function filterUkuran() {
             const result = getFilteredData();
+            document.getElementById('load-more-btn').style.display = 'inline-block';
             tampilkanKatalog(result);
             const ukuran = document.getElementById('ukuran-select').value;
             setStatus(ukuran ? `${result.length} produk ukuran "${ukuran}"` : `${result.length} produk tersedia`);
