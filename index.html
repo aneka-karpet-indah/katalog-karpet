@@ -109,10 +109,33 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 0.8rem; padding: 1rem;
-            max-width: 960px; margin: 0 auto;
+            max-width: 1400px; margin: 0 auto;
         }
         @media (min-width: 600px)  { .katalog-grid { grid-template-columns: repeat(3,1fr); } }
-        @media (min-width: 900px)  { .katalog-grid { grid-template-columns: repeat(4,1fr); } }
+        @media (min-width: 900px)  { .katalog-grid { grid-template-columns: repeat(4,1fr); gap: 1rem; padding: 1.25rem; } }
+        @media (min-width: 1280px) { .katalog-grid { grid-template-columns: repeat(5,1fr); } }
+
+        /* Mobile: header controls stacked */
+        .header-controls { display: contents; }
+        .search-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+        .search-row .search-wrap { flex: 1; }
+        .header-controls > .search-wrap { margin-top: 0.5rem; }
+
+        /* ── DESKTOP HEADER ── */
+        @media (min-width: 900px) {
+            .header-inner { padding: 0.75rem 1.5rem; }
+            .brand-row { margin-bottom: 0; }
+            .header-desktop {
+                display: flex; align-items: center; gap: 1rem;
+            }
+            .header-desktop .brand-row { flex-shrink: 0; margin-bottom: 0; }
+            .header-controls {
+                display: flex; flex: 1; align-items: center; gap: 0.6rem;
+            }
+            .header-controls .search-wrap { flex: 1.5; margin-top: 0 !important; }
+            .header-controls .search-row  { display: flex; gap: 0.5rem; flex: 1; }
+            .header-controls .search-row .search-wrap { flex: 1; margin-top: 0 !important; }
+        }
 
         /* ── CARD ── */
         .card {
@@ -219,10 +242,32 @@
         /* ── MODAL ── */
         #modal-zoom {
             display: none; position: fixed; inset: 0;
-            background: rgba(20,12,6,0.96); z-index: 100; cursor: zoom-out;
+            background: rgba(20,12,6,0.96); z-index: 100;
             align-items: center; justify-content: center;
+            cursor: default;
         }
-        #img-zoom { max-width: 92vw; max-height: 92vh; object-fit: contain; border-radius: 0.75rem; }
+        #modal-zoom .modal-backdrop {
+            position: absolute; inset: 0; cursor: zoom-out;
+        }
+        #modal-zoom .modal-content {
+            position: relative; z-index: 1;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #img-zoom {
+            max-width: 92vw; max-height: 88vh;
+            object-fit: contain; border-radius: 0.75rem;
+            cursor: default; display: block;
+        }
+        #modal-close-btn {
+            position: fixed; top: 1rem; right: 1rem;
+            width: 2.4rem; height: 2.4rem; border-radius: 50%;
+            background: rgba(253,250,245,0.15); border: 1.5px solid rgba(253,250,245,0.3);
+            color: #fff; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 2;
+            transition: background 0.2s, transform 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        #modal-close-btn:hover { background: rgba(253,250,245,0.25); transform: scale(1.1); }
 
         .ornament { text-align: center; color: var(--accent); font-size: 1rem; letter-spacing: 0.4em; margin: 0.25rem 0 0; opacity: 0.4; }
         #status-text { text-align: center; color: var(--muted); font-size: 0.7rem; margin: 0.3rem 0 0.5rem; }
@@ -231,59 +276,65 @@
 <body>
     <header>
         <div class="header-inner">
-            <div class="brand-row">
-                <div>
-                    <img src="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg"
-                         alt="Aneka Karpet Indah"
-                         style="height:2.5rem;width:auto;object-fit:contain;display:block"
-                         fetchpriority="high" decoding="async">
-                    <p class="brand-tagline">CV. Aneka Karpet Indah</p>
-                </div>
-                <a href="https://www.instagram.com/anekakarpetjogja/" target="_blank" rel="noopener noreferrer"
-                   class="ig-btn" aria-label="Instagram Aneka Karpet Indah">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                        <circle cx="12" cy="12" r="4"/>
-                        <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
-                    </svg>
-                </a>
-            </div>
-            <div class="search-wrap">
-                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-                <input type="search" id="search-input" placeholder="Cari merk atau motif..."
-                       autocomplete="off" autocorrect="off" spellcheck="false">
-            </div>
-                <!-- Ukuran filter + Sort -->
-                <div style="display:flex; gap:0.5rem; margin-top:0.5rem">
-                    <div class="search-wrap" style="flex:1">
-                        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:0.85rem;height:0.85rem">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/>
-                        </svg>
-                        <select id="ukuran-select" onchange="filterUkuran()"
-                                style="appearance:none;-webkit-appearance:none;width:100%;padding:0.58rem 2rem 0.58rem 2.4rem;border-radius:999px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.8rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;cursor:pointer">
-                            <option value="">Semua Ukuran</option>
-                        </select>
-                        <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);width:0.8rem;height:0.8rem;color:var(--muted);pointer-events:none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
+            <!-- Mobile: stacked, Desktop: horizontal via CSS -->
+            <div class="header-desktop">
+                <div class="brand-row">
+                    <div>
+                        <img src="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg"
+                             alt="Aneka Karpet Indah"
+                             style="height:2.5rem;width:auto;object-fit:contain;display:block"
+                             fetchpriority="high" decoding="async">
+                        <p class="brand-tagline">CV. Aneka Karpet Indah</p>
                     </div>
-                    <div class="search-wrap" style="flex:1">
-                        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:0.85rem;height:0.85rem">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M6 12h12M9 18h6"/>
+                    <a href="https://www.instagram.com/anekakarpetjogja/" target="_blank" rel="noopener noreferrer"
+                       class="ig-btn" aria-label="Instagram Aneka Karpet Indah" style="margin-left:0.75rem">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <circle cx="12" cy="12" r="4"/>
+                            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
                         </svg>
-                        <select id="sort-select" onchange="sortProduk()"
-                                style="appearance:none;-webkit-appearance:none;width:100%;padding:0.58rem 2rem 0.58rem 2.4rem;border-radius:999px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.8rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;cursor:pointer">
-                            <option value="">Urutkan</option>
-                            <option value="asc">Harga Termurah</option>
-                            <option value="desc">Harga Termahal</option>
-                        </select>
-                        <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);width:0.8rem;height:0.8rem;color:var(--muted);pointer-events:none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </a>
+                </div>
+                <div class="header-controls">
+                    <!-- Search bar -->
+                    <div class="search-wrap" style="flex:1.5">
+                        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
+                        <input type="search" id="search-input" placeholder="Cari merk atau motif..."
+                               autocomplete="off" autocorrect="off" spellcheck="false">
+                    </div>
+                    <!-- Ukuran + Sort -->
+                    <div class="search-row">
+                        <div class="search-wrap" style="flex:1">
+                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:0.85rem;height:0.85rem">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/>
+                            </svg>
+                            <select id="ukuran-select" onchange="filterUkuran()"
+                                    style="appearance:none;-webkit-appearance:none;width:100%;padding:0.58rem 2rem 0.58rem 2.4rem;border-radius:999px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.8rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;cursor:pointer">
+                                <option value="">Semua Ukuran</option>
+                            </select>
+                            <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);width:0.8rem;height:0.8rem;color:var(--muted);pointer-events:none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="search-wrap" style="flex:1">
+                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:0.85rem;height:0.85rem">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M6 12h12M9 18h6"/>
+                            </svg>
+                            <select id="sort-select" onchange="sortProduk()"
+                                    style="appearance:none;-webkit-appearance:none;width:100%;padding:0.58rem 2rem 0.58rem 2.4rem;border-radius:999px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.8rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;cursor:pointer">
+                                <option value="">Urutkan</option>
+                                <option value="asc">Harga Termurah</option>
+                                <option value="desc">Harga Termahal</option>
+                            </select>
+                            <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);width:0.8rem;height:0.8rem;color:var(--muted);pointer-events:none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
                     </div>
                 </div>
+            </div>
         </div>
         <div class="filter-bar" id="filter-bar">
             <button class="filter-btn active">SEMUA</button>
@@ -312,8 +363,16 @@
         </div>
     </main>
 
-    <div id="modal-zoom" onclick="closeZoom()" role="dialog" aria-modal="true">
-        <img id="img-zoom" src="" alt="Zoom produk" loading="lazy" decoding="async">
+    <div id="modal-zoom" role="dialog" aria-modal="true" aria-label="Zoom gambar">
+        <div class="modal-backdrop" onclick="closeZoom()"></div>
+        <button id="modal-close-btn" onclick="closeZoom()" aria-label="Tutup">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+        <div class="modal-content">
+            <img id="img-zoom" src="" alt="Zoom produk" loading="lazy" decoding="async">
+        </div>
     </div>
 
     <script>
