@@ -427,7 +427,7 @@
         const SHEET_ID  = '1iLJWtfJntcjZalA7q-FFIUNe8BXGT40za7kMeELXfJk';
         const WA_NUMBER = '6287881807772';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-        const CACHE_KEY = 'aki_katalog_v2';
+        const CACHE_KEY = 'aki_katalog_v3';
         const CACHE_TTL = 5 * 60 * 1000;
 
         let semuaProduk = [], lazyObserver = null;
@@ -491,19 +491,20 @@
 
         // Baca URL parameter ?q= dan otomatis isi search + filter
         function bacaURLParam() {
-            const params  = new URLSearchParams(window.location.search);
-            const q       = params.get('q');
-            if (q) {
+            const params = new URLSearchParams(window.location.search);
+            const q      = params.get('q');
+            if (q && q.trim()) {
                 const searchInput = document.getElementById('search-input');
-                searchInput.value = q;
+                searchInput.value = q.trim();
+                // Gunakan logika filter yang sama dengan cariProduk
+                const keyword = q.trim().toLowerCase();
                 const hasil = semuaProduk.filter(p =>
-                    p.nama.toLowerCase().includes(q.toLowerCase()) ||
-                    p.koleksi.toLowerCase().includes(q.toLowerCase())
+                    p.nama.toLowerCase().includes(keyword) ||
+                    p.koleksi.toLowerCase().includes(keyword)
                 );
                 tampilkanKatalog(hasil);
-                setStatus(`${hasil.length} produk ditemukan untuk "${q}"`);
-                // Scroll ke search bar agar customer langsung lihat hasil
-                setTimeout(() => searchInput.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+                setStatus(`${hasil.length} produk ditemukan untuk "${q.trim()}"`);
+                setTimeout(() => searchInput.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
             } else {
                 tampilkanKatalog(semuaProduk);
             }
@@ -747,14 +748,14 @@
         }
 
         function shareProduct(koleksi, nama, ukuran, foto) {
-            // Buat URL dengan parameter ?q= agar saat dibuka langsung filter ke produk ini
-            const baseUrl = window.location.origin + window.location.pathname;
-            const query   = encodeURIComponent(koleksi + ' ' + nama);
+            const baseUrl  = window.location.origin + window.location.pathname;
+            const query    = encodeURIComponent(koleksi + ' ' + nama);
             const shareUrl = baseUrl + '?q=' + query;
-            const teks = `Lihat karpet ${koleksi} ${nama} ukuran ${ukuran} di Aneka Karpet Indah!\n${shareUrl}`;
+            const teks     = `Lihat karpet ${koleksi} ${nama} ukuran ${ukuran} di Aneka Karpet Indah!\n${shareUrl}`;
 
             if (navigator.share) {
-                navigator.share({ title: `${koleksi} ${nama}`, text: teks, url: shareUrl })
+                // Kirim hanya text agar link tidak dobel di HP
+                navigator.share({ title: `${koleksi} ${nama}`, text: teks })
                     .catch(() => {});
             } else {
                 navigator.clipboard.writeText(teks)
