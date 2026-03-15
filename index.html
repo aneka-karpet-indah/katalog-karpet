@@ -58,8 +58,12 @@
         .header-inner { padding: 0.85rem 1rem 0.75rem; }
         .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.65rem; }
         .brand-tagline {
-            font-size: 0.62rem; letter-spacing: 0.18em;
+            font-size: 0.62rem; letter-spacing: 0.1em;
             color: var(--muted); text-transform: uppercase; margin-top: 0.15rem;
+            line-height: 1.4;
+        }
+        @media (min-width: 900px) {
+            .brand-tagline { white-space: nowrap; letter-spacing: 0.12em; }
         }
         .ig-btn {
             width: 2.2rem; height: 2.2rem; border-radius: 50%;
@@ -116,25 +120,66 @@
         @media (min-width: 1280px) { .katalog-grid { grid-template-columns: repeat(5,1fr); } }
 
         /* Mobile: header controls stacked */
+        .header-desktop { display: block; }
+        .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.65rem; }
         .header-controls { display: contents; }
         .search-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
         .search-row .search-wrap { flex: 1; }
-        .header-controls > .search-wrap { margin-top: 0.5rem; }
 
         /* ── DESKTOP HEADER ── */
         @media (min-width: 900px) {
-            .header-inner { padding: 0.75rem 1.5rem; }
-            .brand-row { margin-bottom: 0; }
+            .header-inner { padding: 0.85rem 1.5rem; }
+
+            /* Satu baris: [brand] [controls] */
             .header-desktop {
-                display: flex; align-items: center; gap: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 1.25rem;
             }
-            .header-desktop .brand-row { flex-shrink: 0; margin-bottom: 0; }
+
+            /* Brand kiri — lebar tetap */
+            .brand-row {
+                flex-shrink: 0;
+                margin-bottom: 0;
+                align-items: center;
+                gap: 0.75rem;
+            }
+
+            /* Controls mengisi sisa ruang */
             .header-controls {
-                display: flex; flex: 1; align-items: center; gap: 0.6rem;
+                display: flex;
+                flex: 1;
+                align-items: center;
+                gap: 0.5rem;
             }
-            .header-controls .search-wrap { flex: 1.5; margin-top: 0 !important; }
-            .header-controls .search-row  { display: flex; gap: 0.5rem; flex: 1; }
-            .header-controls .search-row .search-wrap { flex: 1; margin-top: 0 !important; }
+
+            /* Search motif lebih lebar */
+            .header-controls > .search-wrap {
+                flex: 2;
+                margin-top: 0 !important;
+            }
+
+            /* Baris ukuran + sort sejajar dengan search */
+            .search-row {
+                flex: 1.2;
+                display: flex;
+                gap: 0.5rem;
+                margin-top: 0;
+            }
+            .search-row .search-wrap {
+                flex: 1;
+                margin-top: 0 !important;
+            }
+
+            /* Semua input/select sama tingginya */
+            .header-controls input,
+            .header-controls select {
+                height: 2.4rem;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                display: flex;
+                align-items: center;
+            }
         }
 
         /* ── CARD ── */
@@ -284,7 +329,7 @@
                              alt="Aneka Karpet Indah"
                              style="height:2.5rem;width:auto;object-fit:contain;display:block"
                              fetchpriority="high" decoding="async">
-                        <p class="brand-tagline">CV. Aneka Karpet Indah</p>
+                        <p class="brand-tagline">Katalog Permadani - CV. Aneka Karpet Indah</p>
                     </div>
                     <a href="https://www.instagram.com/anekakarpetjogja/" target="_blank" rel="noopener noreferrer"
                        class="ig-btn" aria-label="Instagram Aneka Karpet Indah" style="margin-left:0.75rem">
