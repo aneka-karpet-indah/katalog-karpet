@@ -498,10 +498,12 @@
                 searchInput.value = q.trim();
                 // Gunakan logika filter yang sama dengan cariProduk
                 const keyword = q.trim().toLowerCase();
-                const hasil = semuaProduk.filter(p =>
-                    p.nama.toLowerCase().includes(keyword) ||
-                    p.koleksi.toLowerCase().includes(keyword)
-                );
+                const hasil = semuaProduk.filter(p => {
+                    const gabungan = (p.koleksi + ' ' + p.nama).toLowerCase();
+                    return p.nama.toLowerCase().includes(keyword) ||
+                           p.koleksi.toLowerCase().includes(keyword) ||
+                           gabungan.includes(keyword);
+                });
                 tampilkanKatalog(hasil);
                 setStatus(`${hasil.length} produk ditemukan untuk "${q.trim()}"`);
                 setTimeout(() => searchInput.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
@@ -728,7 +730,8 @@
 
             return semuaProduk.filter(p => {
                 const matchKoleksi = koleksi === 'SEMUA' || p.koleksi.toUpperCase() === koleksi;
-                const matchKeyword = !keyword || p.nama.toLowerCase().includes(keyword) || p.koleksi.toLowerCase().includes(keyword);
+                const gabungan     = (p.koleksi + ' ' + p.nama).toLowerCase();
+                const matchKeyword = !keyword || p.nama.toLowerCase().includes(keyword) || p.koleksi.toLowerCase().includes(keyword) || gabungan.includes(keyword);
                 const matchUkuran  = !ukuran  || p.variasi.some(v => v.ukuran === ukuran);
                 return matchKoleksi && matchKeyword && matchUkuran;
             });
