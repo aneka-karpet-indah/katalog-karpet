@@ -428,7 +428,7 @@
         const WA_NUMBER = '6287881807772';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
         const CACHE_KEY = 'aki_katalog_v3';
-        const CACHE_TTL = 5 * 60 * 1000;
+        const CACHE_TTL = 1 * 60 * 1000; // 1 menit
 
         let semuaProduk = [], lazyObserver = null;
         let dataTampil = [];   // data yang sedang aktif (hasil filter/search)
@@ -603,11 +603,14 @@
         function buatCardHTML(item, idx) {
             const cid = `c${idx}`;
 
-            // Opsi A: cek apakah ada filter ukuran aktif, pakai variasi yang sesuai sebagai default
+            // Pilih variasi default:
+            // 1. Kalau ada filter ukuran aktif → pakai variasi yang cocok
+            // 2. Tidak ada filter → cari variasi pertama yang masih ada stok
+            // 3. Semua habis → fallback ke variasi[0]
             const filterUkuran = document.getElementById('ukuran-select').value;
             const variasiCocok = filterUkuran
                 ? (item.variasi.find(v => v.ukuran === filterUkuran) || item.variasi[0])
-                : item.variasi[0];
+                : (item.variasi.find(v => v.stok != 0) || item.variasi[0]);
             const def = variasiCocok;
 
             const stokHabis = def.stok == 0;
