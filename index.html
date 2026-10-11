@@ -475,10 +475,26 @@
                     const id = isStandalone ? `standalone-${uid++}` : `${koleksi}-${namaRaw}`;
                     if (!tempGroup[id]) tempGroup[id] = { koleksi, nama: namaRaw || 'Motif Baru', fotoUtama: foto, variasi: [] };
                     const fotoFinal = (foto && foto !== '-') ? foto : tempGroup[id].fotoUtama;
-                    tempGroup[id].variasi.push({ ukuran, harga, stok, foto: fotoFinal });
+                    // Deduplication: jika ukuran sama sudah ada, timpa dengan data terbaru
+                    const idxExist = tempGroup[id].variasi.findIndex(v => v.ukuran === ukuran);
+                    if (idxExist >= 0) {
+                        tempGroup[id].variasi[idxExist] = { ukuran, harga, stok, foto: fotoFinal };
+                    } else {
+                        tempGroup[id].variasi.push({ ukuran, harga, stok, foto: fotoFinal });
+                    }
                 });
 
                 semuaProduk = Object.values(tempGroup);
+                // Sort variasi tiap produk dari ukuran terkecil ke terbesar (berdasarkan luas)
+                semuaProduk.forEach(p => {
+                    p.variasi.sort((a, b) => {
+                        const luas = u => {
+                            const parts = u.split('x').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+                            return parts.length >= 2 ? parts[0] * parts[1] : 0;
+                        };
+                        return luas(a.ukuran) - luas(b.ukuran);
+                    });
+                });
                 try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: semuaProduk })); } catch(_) {}
                 buatTombolFilter();
                 bacaURLParam(); // cek URL param setelah data siap
