@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aneka Karpet Indah - Katalog Resmi</title>
     <meta name="description" content="Katalog permadani CV. Aneka Karpet Indah, Yogyakarta. Cek motif, ukuran, harga dan stok terbaru, lalu pesan langsung lewat WhatsApp.">
-    <meta name="theme-color" content="#FDFAF5">
+    <meta name="theme-color" content="#FFFCF7">
 
     <!-- Preview link saat dibagikan di WhatsApp / Facebook / Instagram -->
     <meta property="og:type" content="website">
@@ -13,430 +13,370 @@
     <meta property="og:title" content="Katalog Permadani - CV. Aneka Karpet Indah">
     <meta property="og:description" content="Cek motif, ukuran, harga dan stok karpet terbaru. Pesan langsung lewat WhatsApp.">
     <meta property="og:url" content="https://aneka-karpet-indah.github.io/katalog-karpet/">
-    <meta property="og:image" content="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg">
+    <meta property="og:image" content="https://res.cloudinary.com/dc86lsnii/image/upload/v1793504577/Aneka-Karpet-Indah-logo-page-0001_fzveis.jpg">
     <meta property="og:locale" content="id_ID">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" type="image/jpeg" href="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg">
-    <link rel="apple-touch-icon" href="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg">
+    <link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/dc86lsnii/image/upload/f_auto,q_auto,w_96,h_96,c_pad,b_white/v1793504577/Aneka-Karpet-Indah-logo-page-0001_fzveis.jpg">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/dc86lsnii/image/upload/f_auto,q_auto,w_180,h_180,c_pad,b_white/v1793504577/Aneka-Karpet-Indah-logo-page-0001_fzveis.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;1,600&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://docs.google.com">
-    <link rel="preconnect" href="https://i.ibb.co.com">
     <link rel="preconnect" href="https://res.cloudinary.com">
-    <link rel="preload" as="image" href="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg">
+    <link rel="preload" as="image" href="https://res.cloudinary.com/dc86lsnii/image/upload/f_auto,q_auto,h_120/v1793504577/Aneka-Karpet-Indah-logo-page-0001_fzveis.jpg">
 
     <style>
         :root {
-            --bg:        #F5F0E8;
-            --surface:   #FDFAF5;
-            --border:    #DDD5C4;
-            --text:      #3D2B1F;
-            --muted:     #9B8B79;
-            --accent:    #C4714A;
-            --accent2:   #7A8C6E;
-            --header-bg: #FDFAF5;
-            --card-bg:   #FDFAF5;
-            --shadow:    rgba(61,43,31,0.10);
+            --bg:          #F5F0E8;
+            --surface:     #FFFCF7;
+            --border:      #DCD2C1;
+            --text:        #2E2018;
+            --muted:       #6B5A4A;
+            --accent:      #A9552F;
+            --accent-soft: #F3E2D6;
+            --ok:          #4E6B3E;
+            --no:          #B3261E;
+            --wa:          #1F7A4D;
+            --shadow:      rgba(46,32,24,0.10);
+            --radius:      16px;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        img { max-width: 100%; }
+        img { max-width: 100%; display: block; }
         button, input, select { font: inherit; color: inherit; }
+        button { background: none; border: 0; cursor: pointer; }
         input[type="search"] { -webkit-appearance: none; appearance: none; }
-        .card-price.tanya { font-size: 0.8rem; color: var(--accent); }
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+        }
 
         body {
-            background-color: var(--bg);
+            background: var(--bg);
             color: var(--text);
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 16px; line-height: 1.5;
             min-height: 100vh;
-            padding-bottom: 5rem;
-            position: relative;
         }
-
-        /* Subtle grain texture */
-        body::before {
-            content: '';
-            position: fixed; inset: 0;
-            pointer-events: none; z-index: 0; opacity: 0.035;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            background-size: 180px;
-        }
-
-        main, header { position: relative; z-index: 1; }
 
         /* ── HEADER ── */
         header {
-            background-color: var(--header-bg);
-            border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 50;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
         }
-        .header-inner { padding: 0.85rem 1rem 0.75rem; }
-        .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.65rem; }
-        .brand-tagline {
-            font-size: 0.62rem; letter-spacing: 0.1em;
-            color: var(--muted); text-transform: uppercase; margin-top: 0.15rem;
-            line-height: 1.4;
-        }
-        @media (min-width: 900px) {
-            .brand-tagline { white-space: nowrap; letter-spacing: 0.12em; }
-        }
-        .ig-btn {
-            width: 2.2rem; height: 2.2rem; border-radius: 50%;
+        .header-inner { max-width: 1400px; margin: 0 auto; padding: 12px 16px 0; }
+        .header-top { display: flex; flex-direction: column; gap: 12px; }
+        .brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .brand-logo { height: 34px; width: auto; }
+        .brand-tagline { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; margin-top: 2px; }
+        .icon-btn {
+            width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
             border: 1.5px solid var(--border); background: var(--surface);
-            display: flex; align-items: center; justify-content: center;
-            color: var(--muted); transition: border-color 0.2s, color 0.2s; flex-shrink: 0;
-            text-decoration: none;
+            display: grid; place-items: center; color: var(--muted);
+            transition: border-color .2s, color .2s; text-decoration: none;
         }
-        .ig-btn:hover { border-color: #E1306C; color: #E1306C; }
+        .icon-btn:hover { border-color: #C13584; color: #C13584; }
 
-        .search-wrap { position: relative; margin-bottom: 0; }
+        .search-row { display: flex; gap: 8px; }
+        .search-wrap { flex: 1; position: relative; }
         .search-wrap input {
-            width: 100%; padding: 0.58rem 1rem 0.58rem 2.4rem;
-            border-radius: 999px; border: 1.5px solid var(--border);
-            background: var(--bg); color: var(--text);
-            font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
-            outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%; height: 44px; border-radius: 12px;
+            border: 1.5px solid var(--border); background: var(--bg);
+            padding: 0 14px 0 42px; font-size: 16px; color: var(--text);
+            transition: border-color .2s, box-shadow .2s;
         }
         .search-wrap input::placeholder { color: var(--muted); }
-        .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(196,113,74,0.12); }
-        .search-wrap select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(196,113,74,0.12); outline: none; }
-        .search-icon {
-            position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%);
-            color: var(--muted); width: 0.9rem; height: 0.9rem; pointer-events: none;
+        .search-wrap input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(169,85,47,0.15); }
+        .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+
+        .filter-btn-open {
+            height: 44px; padding: 0 14px; border-radius: 12px; flex-shrink: 0;
+            border: 1.5px solid var(--border); background: var(--surface);
+            display: flex; align-items: center; gap: 6px;
+            font-size: 14px; font-weight: 700; color: var(--text); position: relative;
+            transition: border-color .2s;
         }
+        .filter-btn-open:hover { border-color: var(--accent); }
+        .filter-btn-open .count {
+            min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+            background: var(--accent); color: #fff; font-size: 12px; line-height: 20px; text-align: center;
+            display: none;
+        }
+        .filter-btn-open.aktif { border-color: var(--accent); color: var(--accent); }
+        .filter-btn-open.aktif .count { display: inline-block; }
 
         .filter-bar {
-            display: flex; gap: 0.45rem;
-            overflow-x: auto; padding: 0.65rem 1rem 0.75rem;
-            scrollbar-width: none;
+            display: flex; gap: 8px; overflow-x: auto; padding: 12px 0;
+            scrollbar-width: none; -webkit-overflow-scrolling: touch;
         }
         .filter-bar::-webkit-scrollbar { display: none; }
-
         .filter-btn {
-            white-space: nowrap; padding: 0.3rem 1rem;
-            border-radius: 999px; border: 1.5px solid var(--border);
-            background: var(--surface); color: var(--muted);
-            font-family: 'DM Sans', sans-serif; font-size: 0.68rem;
-            font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-            cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+            flex-shrink: 0; min-height: 36px; padding: 0 16px; border-radius: 999px;
+            border: 1.5px solid var(--border); background: var(--surface);
+            font-size: 13px; font-weight: 700; color: var(--muted); white-space: nowrap;
+            transition: border-color .2s, color .2s, background .2s;
         }
-        .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
-        .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .filter-btn:hover { border-color: var(--text); color: var(--text); }
+        .filter-btn.active { background: var(--text); border-color: var(--text); color: #fff; }
+
+        @media (min-width: 900px) {
+            .header-inner { padding: 14px 24px 0; }
+            .header-top { flex-direction: row; align-items: center; gap: 24px; }
+            .brand { flex-shrink: 0; }
+            .search-row { flex: 1; max-width: 720px; margin-left: auto; }
+            .filter-bar { scrollbar-width: thin; scrollbar-color: var(--border) transparent; padding-bottom: 10px; }
+            .filter-bar::-webkit-scrollbar { display: block; height: 6px; }
+            .filter-bar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        }
+
+        /* ── STATUS ── */
+        .status-row {
+            max-width: 1400px; margin: 0 auto; padding: 14px 16px 0;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+        }
+        #status-text { font-size: 14px; color: var(--muted); }
+        #reset-filter {
+            display: none; min-height: 36px; padding: 0 12px; border-radius: 999px;
+            font-size: 13px; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent-soft); background: var(--accent-soft);
+        }
+        #reset-filter.tampil { display: inline-block; }
+        @media (min-width: 900px) { .status-row { padding: 18px 24px 0; } }
 
         /* ── GRID ── */
         .katalog-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.8rem; padding: 1rem;
+            display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px; padding: 12px 16px 24px;
             max-width: 1400px; margin: 0 auto;
         }
-        @media (min-width: 600px)  { .katalog-grid { grid-template-columns: repeat(3,1fr); } }
-        @media (min-width: 900px)  { .katalog-grid { grid-template-columns: repeat(4,1fr); gap: 1rem; padding: 1.25rem; } }
-        @media (min-width: 1280px) { .katalog-grid { grid-template-columns: repeat(5,1fr); } }
-
-        /* Mobile: header controls stacked */
-        .header-desktop { display: block; }
-        .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.65rem; }
-        .header-controls { display: contents; }
-        .search-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
-        .search-row .search-wrap { flex: 1; }
-
-        /* ── DESKTOP HEADER ── */
-        @media (min-width: 900px) {
-            .header-inner { padding: 0.85rem 1.5rem; }
-
-            /* Satu baris: [brand] [controls] */
-            .header-desktop {
-                display: flex;
-                align-items: center;
-                gap: 1.25rem;
-            }
-
-            /* Brand kiri — lebar tetap */
-            .brand-row {
-                flex-shrink: 0;
-                margin-bottom: 0;
-                align-items: center;
-                gap: 0.75rem;
-            }
-
-            /* Controls mengisi sisa ruang */
-            .header-controls {
-                display: flex;
-                flex: 1;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            /* Search motif lebih lebar */
-            .header-controls > .search-wrap {
-                flex: 2;
-                margin-top: 0 !important;
-            }
-
-            /* Baris ukuran + sort sejajar dengan search */
-            .search-row {
-                flex: 1.2;
-                display: flex;
-                gap: 0.5rem;
-                margin-top: 0;
-            }
-            .search-row .search-wrap {
-                flex: 1;
-                margin-top: 0 !important;
-            }
-
-            /* Semua input/select sama tingginya */
-            .header-controls input,
-            .header-controls select {
-                height: 2.4rem;
-                padding-top: 0 !important;
-                padding-bottom: 0 !important;
-                display: flex;
-                align-items: center;
-            }
-        }
+        @media (min-width: 600px)  { .katalog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+        @media (min-width: 900px)  { .katalog-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding: 16px 24px 32px; } }
+        @media (min-width: 1280px) { .katalog-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 
         /* ── CARD ── */
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 1rem; overflow: hidden;
-            display: flex; flex-direction: column;
-            box-shadow: 0 2px 8px var(--shadow);
-            transition: transform 0.22s ease, box-shadow 0.22s ease;
-            contain: layout style;
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+            overflow: hidden; display: flex; flex-direction: column;
+            transition: box-shadow .2s, transform .2s;
         }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px var(--shadow); }
+        @media (hover: hover) { .card:hover { box-shadow: 0 8px 24px var(--shadow); transform: translateY(-2px); } }
 
-        .card-img-wrap {
-            position: relative; aspect-ratio: 3/4; overflow: hidden;
-            background-color: #E8E0D0;
-        }
-        .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; display: block; }
-
-        .ukuran-overlay {
-            display: flex; flex-wrap: wrap; gap: 0.28rem;
-            margin-bottom: 0.45rem;
-        }
-        .ukuran-label {
-            font-size: 0.58rem; font-weight: 700; color: var(--muted);
-            text-transform: uppercase; letter-spacing: 0.08em;
-            margin-bottom: 0.28rem;
-            display: flex; align-items: center; gap: 0.35rem;
-        }
-        .ukuran-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-        .ukuran-btn {
-            font-size: 0.6rem; padding: 0.25rem 0.55rem; border-radius: 0.35rem;
-            background: var(--bg); border: 1.5px solid var(--border);
-            color: var(--text); font-weight: 700; font-family: 'DM Sans', sans-serif;
-            cursor: pointer; transition: all 0.15s; letter-spacing: 0.02em;
-        }
-        .ukuran-btn:hover:not(.selected) { border-color: var(--accent); color: var(--accent); }        .ukuran-btn.selected { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 1px 4px rgba(196,113,74,0.35); }
-
-        .card-body { padding: 0.6rem 0.7rem 0.7rem; display: flex; flex-direction: column; flex: 1; }
-        .card-koleksi {
-            font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em;
-            text-transform: uppercase; color: var(--accent); margin-bottom: 0.12rem;
-        }
-        .card-nama {
-            font-family: 'Lora', serif; font-size: 0.78rem; font-weight: 600;
-            line-height: 1.3;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-            overflow: hidden; margin-bottom: 0.4rem; color: var(--text);
-        }
-        .card-footer {
-            margin-top: auto; padding-top: 0.45rem;
-            border-top: 1px solid var(--border);
-        }
-        .card-footer-price { margin-bottom: 0.4rem; }
-        .card-footer-actions { display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; }
-        .card-price-wrap { display: flex; flex-direction: column; gap: 0.02rem; }
-        .card-price-label { font-size: 0.54rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
-        .card-price { font-family: 'Lora', serif; font-size: 0.9rem; font-weight: 600; color: var(--text); font-style: italic; line-height: 1.15; white-space: nowrap; }
-        .card-stok  { font-size: 0.58rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-        .stok-ada   { color: var(--accent2); }
-        .stok-habis { color: #e05252; }
-
-        .wa-btn {
-            width: 1.9rem; height: 1.9rem; border-radius: 0.5rem;
-            background: var(--surface); border: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; transition: transform 0.15s, box-shadow 0.15s; text-decoration: none;
-        }
-        .wa-btn:hover { transform: scale(1.12); box-shadow: 0 2px 8px var(--shadow); }
-
-        /* Share button */
-        .share-btn {
-            width: 1.9rem; height: 1.9rem; border-radius: 0.5rem;
-            background: var(--surface); border: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; transition: transform 0.15s, box-shadow 0.15s;
-            cursor: pointer; color: var(--muted);
-        }
-        .share-btn:hover { transform: scale(1.12); box-shadow: 0 2px 8px var(--shadow); color: var(--accent); border-color: var(--accent); }
-
-        /* Stok habis overlay */
-        .stok-habis-overlay {
-            position: absolute; inset: 0;
-            background: rgba(245,240,232,0.72);
-            display: flex; align-items: center; justify-content: center;
-            pointer-events: none;
-        }
+        .card-img-wrap { position: relative; aspect-ratio: 4/5; background: #E6DCCB; overflow: hidden; cursor: zoom-in; }
+        .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .card-img-wrap.habis img { opacity: .55; }
         .stok-habis-badge {
-            background: #e05252; color: #fff;
-            font-family: 'DM Sans', sans-serif; font-size: 0.62rem; font-weight: 700;
-            letter-spacing: 0.1em; text-transform: uppercase;
-            padding: 0.3rem 0.8rem; border-radius: 999px;
-            box-shadow: 0 2px 8px rgba(224,82,82,0.3);
+            position: absolute; left: 8px; top: 8px;
+            background: var(--no); color: #fff; font-size: 12px; font-weight: 700;
+            padding: 4px 10px; border-radius: 999px; pointer-events: none;
         }
+
+        .card-body { padding: 10px 10px 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .card-koleksi { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); line-height: 1.3; }
+        .card-nama {
+            font-family: 'Lora', Georgia, serif; font-size: 15px; font-weight: 600; line-height: 1.3; margin-top: -4px;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .ukuran-label { font-size: 12px; color: var(--muted); line-height: 1.3; }
+        .ukuran-list { display: flex; flex-wrap: wrap; gap: 6px; }
+        .ukuran-btn {
+            min-height: 36px; padding: 0 10px; border-radius: 10px;
+            border: 1.5px solid var(--border); background: var(--bg);
+            font-size: 13px; font-weight: 700; white-space: nowrap;
+            transition: border-color .15s, background .15s, color .15s;
+        }
+        .ukuran-btn:hover { border-color: var(--accent); }
+        .ukuran-btn.kosong { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+        .ukuran-btn.selected { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+
+        .card-footer { margin-top: auto; display: flex; flex-direction: column; gap: 6px; padding-top: 4px; }
+        .card-price { font-family: 'Lora', Georgia, serif; font-size: 18px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
+        .card-price.tanya { font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--accent); }
+        .card-stok { font-size: 13px; font-weight: 700; line-height: 1.3; }
+        .stok-ada   { color: var(--ok); }
+        .stok-habis { color: var(--no); }
+
+        .card-actions { display: flex; gap: 6px; margin-top: 4px; }
+        .wa-btn {
+            flex: 1; min-width: 0; height: 44px; border-radius: 12px;
+            background: var(--wa); color: #fff; text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            font-size: 14px; font-weight: 700; transition: filter .2s;
+        }
+        .wa-btn:hover { filter: brightness(1.08); }
+        .share-btn {
+            width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+            border: 1.5px solid var(--border); display: grid; place-items: center; color: var(--muted);
+            transition: border-color .2s, color .2s;
+        }
+        .share-btn:hover { border-color: var(--accent); color: var(--accent); }
 
         /* ── SKELETON ── */
         .skeleton {
-            background: linear-gradient(90deg, var(--border) 25%, #f0ece4 50%, var(--border) 75%);
+            background: linear-gradient(90deg, #E6DCCB 25%, #F1EADF 50%, #E6DCCB 75%);
             background-size: 200% 100%; animation: shimmer 1.6s infinite;
         }
-        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+        @keyframes shimmer { 0% { background-position: 200% 0 } 100% { background-position: -200% 0 } }
 
         /* ── LAZY IMG ── */
-        .lazy-img { opacity: 0; transition: opacity 0.3s ease; will-change: opacity; }
-        .lazy-img.loaded { opacity: 1; will-change: auto; }
+        .lazy-img { opacity: 0; transition: opacity .3s ease; }
+        .lazy-img.loaded { opacity: 1; }
 
-        /* ── MODAL ── */
+        /* ── LOAD MORE ── */
+        #load-more-wrap { display: none; text-align: center; padding: 8px 16px 40px; }
+        #load-more-btn {
+            min-height: 48px; padding: 0 28px; border-radius: 999px;
+            background: var(--surface); color: var(--text); border: 1.5px solid var(--text);
+            font-size: 15px; font-weight: 700; transition: background .2s, color .2s;
+        }
+        #load-more-btn:hover { background: var(--text); color: #fff; }
+        #load-more-info { margin-top: 8px; font-size: 13px; color: var(--muted); }
+
+        /* ── FILTER SHEET ── */
+        #filter-sheet {
+            position: fixed; inset: 0; z-index: 90; display: none;
+            flex-direction: column; justify-content: flex-end; align-items: center;
+            background: rgba(46,32,24,0.45);
+        }
+        #filter-sheet.open { display: flex; }
+        #filter-sheet .sheet-bg { position: absolute; inset: 0; }
+        .sheet {
+            position: relative; width: 100%; max-width: 560px; max-height: 85vh; overflow-y: auto;
+            background: var(--surface); border-radius: 20px 20px 0 0;
+            padding: 8px 16px calc(20px + env(safe-area-inset-bottom));
+            animation: naik .22s ease-out;
+        }
+        @keyframes naik { from { transform: translateY(24px); opacity: .6 } to { transform: none; opacity: 1 } }
+        @media (min-width: 600px) { #filter-sheet { justify-content: center; } .sheet { border-radius: 20px; } }
+        .sheet-grab { width: 40px; height: 4px; border-radius: 2px; background: var(--border); margin: 0 auto 8px; }
+        .sheet-head { display: flex; align-items: center; justify-content: space-between; }
+        .sheet-head h2 { font-size: 18px; font-weight: 700; }
+        .sheet h3 { font-size: 15px; font-weight: 700; margin: 16px 0 10px; }
+        .opsi-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .opsi-btn {
+            min-height: 44px; padding: 0 14px; border-radius: 12px;
+            border: 1.5px solid var(--border); background: var(--bg);
+            font-size: 14px; font-weight: 700; transition: border-color .15s, background .15s, color .15s;
+        }
+        .opsi-btn:hover { border-color: var(--accent); }
+        .opsi-btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+        .sheet-actions { display: flex; gap: 8px; margin-top: 24px; position: sticky; bottom: 0; background: var(--surface); padding-top: 8px; }
+        .sheet-actions button { flex: 1; height: 48px; border-radius: 12px; font-size: 15px; font-weight: 700; }
+        .btn-sec { border: 1.5px solid var(--border) !important; }
+        .btn-pri { background: var(--text) !important; color: #fff; }
+
+        /* ── MODAL ZOOM ── */
         #modal-zoom {
-            display: none; position: fixed; inset: 0;
-            background: rgba(20,12,6,0.96); z-index: 100;
-            align-items: center; justify-content: center;
-            cursor: default;
+            display: none; position: fixed; inset: 0; z-index: 100;
+            background: rgba(20,12,6,0.96); align-items: center; justify-content: center;
         }
-        #modal-zoom .modal-backdrop {
-            position: absolute; inset: 0; cursor: zoom-out;
-        }
-        #modal-zoom .modal-content {
-            position: relative; z-index: 1;
-            display: flex; align-items: center; justify-content: center;
-        }
-        #img-zoom {
-            max-width: 92vw; max-height: 88vh;
-            object-fit: contain; border-radius: 0.75rem;
-            cursor: default; display: block;
-        }
+        #modal-zoom .modal-backdrop { position: absolute; inset: 0; cursor: zoom-out; }
+        #modal-zoom .modal-content { position: relative; z-index: 1; }
+        #img-zoom { max-width: 92vw; max-height: 88vh; object-fit: contain; border-radius: 12px; }
         #modal-close-btn {
-            position: fixed; top: 1rem; right: 1rem;
-            width: 2.4rem; height: 2.4rem; border-radius: 50%;
-            background: rgba(253,250,245,0.15); border: 1.5px solid rgba(253,250,245,0.3);
-            color: #fff; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 2;
-            transition: background 0.2s, transform 0.2s;
-            backdrop-filter: blur(4px);
+            position: fixed; top: 16px; right: 16px; z-index: 2;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(255,252,247,0.15); border: 1.5px solid rgba(255,252,247,0.35);
+            color: #fff; display: grid; place-items: center;
         }
-        #modal-close-btn:hover { background: rgba(253,250,245,0.25); transform: scale(1.1); }
+        #modal-close-btn:hover { background: rgba(255,252,247,0.28); }
 
-        .ornament { text-align: center; color: var(--accent); font-size: 1rem; letter-spacing: 0.4em; margin: 0.25rem 0 0; opacity: 0.4; }
-        #status-text { text-align: center; color: var(--muted); font-size: 0.7rem; margin: 0.3rem 0 0.5rem; }
+        .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     </style>
 </head>
 <body>
     <header>
         <div class="header-inner">
-            <!-- Mobile: stacked, Desktop: horizontal via CSS -->
-            <div class="header-desktop">
-                <div class="brand-row">
+            <div class="header-top">
+                <div class="brand">
                     <div>
-                        <img src="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg"
-                             alt="Aneka Karpet Indah"
-                             style="height:2.5rem;width:auto;object-fit:contain;display:block"
-                             fetchpriority="high" decoding="async">
-                        <p class="brand-tagline">Katalog Permadani - CV. Aneka Karpet Indah</p>
+                        <img class="brand-logo"
+                             src="https://res.cloudinary.com/dc86lsnii/image/upload/f_auto,q_auto,h_120/v1793504577/Aneka-Karpet-Indah-logo-page-0001_fzveis.jpg"
+                             alt="CV. Aneka Karpet Indah" fetchpriority="high">
+                        <p class="brand-tagline">Katalog Permadani · Yogyakarta</p>
                     </div>
                     <a href="https://www.instagram.com/anekakarpetjogja/" target="_blank" rel="noopener noreferrer"
-                       class="ig-btn" aria-label="Instagram Aneka Karpet Indah" style="margin-left:0.75rem">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                            <circle cx="12" cy="12" r="4"/>
-                            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+                       class="icon-btn" aria-label="Instagram Aneka Karpet Indah">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
+                            <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
                         </svg>
                     </a>
                 </div>
-                <div class="header-controls">
-                    <!-- Search bar -->
-                    <div class="search-wrap" style="flex:1.5">
-                        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                <div class="search-row">
+                    <label class="search-wrap">
+                        <span class="sr-only">Cari merk atau kode motif</span>
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
                         </svg>
-                        <input type="search" id="search-input" placeholder="Cari merk atau motif..."
-                               autocomplete="off" autocorrect="off" spellcheck="false">
-                    </div>
-                    <!-- Ukuran + Sort -->
-                    <div class="search-row">
-                        <div class="search-wrap" style="flex:1">
-                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:0.85rem;height:0.85rem">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/>
-                            </svg>
-                            <select id="ukuran-select" onchange="filterUkuran()"
-                                    style="appearance:none;-webkit-appearance:none;width:100%;padding:0.58rem 2rem 0.58rem 2.4rem;border-radius:999px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.8rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;cursor:pointer">
-                                <option value="">Semua Ukuran</option>
-                            </select>
-                            <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);width:0.8rem;height:0.8rem;color:var(--muted);pointer-events:none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                        <div class="search-wrap" style="flex:1">
-                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:0.85rem;height:0.85rem">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M6 12h12M9 18h6"/>
-                            </svg>
-                            <select id="sort-select" onchange="sortProduk()"
-                                    style="appearance:none;-webkit-appearance:none;width:100%;padding:0.58rem 2rem 0.58rem 2.4rem;border-radius:999px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.8rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;cursor:pointer">
-                                <option value="">Urutkan</option>
-                                <option value="asc">Harga Termurah</option>
-                                <option value="desc">Harga Termahal</option>
-                            </select>
-                            <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);width:0.8rem;height:0.8rem;color:var(--muted);pointer-events:none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                    </div>
+                        <input type="search" id="search-input" placeholder="Cari merk atau motif"
+                               autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search">
+                    </label>
+                    <button type="button" class="filter-btn-open" id="filter-open" aria-haspopup="dialog" aria-controls="filter-sheet">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 6h16M7 12h10M10 18h4"/>
+                        </svg>
+                        Filter <span class="count" id="filter-count"></span>
+                    </button>
                 </div>
             </div>
-        </div>
-        <div class="filter-bar" id="filter-bar">
-            <button class="filter-btn active">SEMUA</button>
+            <nav class="filter-bar" id="filter-bar" aria-label="Koleksi">
+                <button class="filter-btn active" data-koleksi="">SEMUA</button>
+            </nav>
         </div>
     </header>
 
     <main>
-        <div class="katalog-grid" id="katalog-container">
-            <div class="card"><div class="card-img-wrap skeleton" style="aspect-ratio:3/4"></div><div class="card-body" style="gap:0.4rem"><div class="skeleton" style="height:0.5rem;width:40%;border-radius:4px"></div><div class="skeleton" style="height:0.75rem;width:90%;border-radius:4px"></div><div class="skeleton" style="height:0.75rem;width:65%;border-radius:4px"></div><div class="skeleton" style="height:1rem;width:55%;border-radius:4px;margin-top:0.4rem"></div></div></div>
-            <div class="card"><div class="card-img-wrap skeleton" style="aspect-ratio:3/4"></div><div class="card-body" style="gap:0.4rem"><div class="skeleton" style="height:0.5rem;width:40%;border-radius:4px"></div><div class="skeleton" style="height:0.75rem;width:90%;border-radius:4px"></div><div class="skeleton" style="height:0.75rem;width:65%;border-radius:4px"></div><div class="skeleton" style="height:1rem;width:55%;border-radius:4px;margin-top:0.4rem"></div></div></div>
+        <div class="status-row">
+            <p id="status-text" aria-live="polite">Memuat katalog…</p>
+            <button type="button" id="reset-filter">Hapus filter</button>
         </div>
-        <p class="ornament" id="ornament" style="display:none">— ✦ —</p>
-        <p id="status-text" style="display:none"></p>
 
-        <!-- Tombol Muat Lebih Banyak -->
-        <div id="load-more-wrap" style="display:none; text-align:center; padding: 1rem 1rem 2rem;">
-            <button id="load-more-btn" onclick="muatLebihBanyak()"
-                    style="padding:0.65rem 2.2rem; background:var(--surface); color:var(--accent);
-                           border: 1.5px solid var(--accent); border-radius:999px;
-                           font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:700;
-                           letter-spacing:0.06em; text-transform:uppercase; cursor:pointer;
-                           transition: background 0.2s, color 0.2s;">
-                Muat Lebih Banyak
-            </button>
-            <p id="load-more-info" style="margin-top:0.5rem; font-size:0.68rem; color:var(--muted);"></p>
+        <div class="katalog-grid" id="katalog-container">
+            <div class="card"><div class="card-img-wrap skeleton"></div><div class="card-body"><div class="skeleton" style="height:12px;width:40%;border-radius:4px"></div><div class="skeleton" style="height:16px;width:85%;border-radius:4px"></div><div class="skeleton" style="height:36px;width:60%;border-radius:10px"></div><div class="skeleton" style="height:44px;width:100%;border-radius:12px;margin-top:8px"></div></div></div>
+            <div class="card"><div class="card-img-wrap skeleton"></div><div class="card-body"><div class="skeleton" style="height:12px;width:40%;border-radius:4px"></div><div class="skeleton" style="height:16px;width:85%;border-radius:4px"></div><div class="skeleton" style="height:36px;width:60%;border-radius:10px"></div><div class="skeleton" style="height:44px;width:100%;border-radius:12px;margin-top:8px"></div></div></div>
+            <div class="card"><div class="card-img-wrap skeleton"></div><div class="card-body"><div class="skeleton" style="height:12px;width:40%;border-radius:4px"></div><div class="skeleton" style="height:16px;width:85%;border-radius:4px"></div><div class="skeleton" style="height:36px;width:60%;border-radius:10px"></div><div class="skeleton" style="height:44px;width:100%;border-radius:12px;margin-top:8px"></div></div></div>
+            <div class="card"><div class="card-img-wrap skeleton"></div><div class="card-body"><div class="skeleton" style="height:12px;width:40%;border-radius:4px"></div><div class="skeleton" style="height:16px;width:85%;border-radius:4px"></div><div class="skeleton" style="height:36px;width:60%;border-radius:10px"></div><div class="skeleton" style="height:44px;width:100%;border-radius:12px;margin-top:8px"></div></div></div>
+        </div>
+
+        <div id="load-more-wrap">
+            <button type="button" id="load-more-btn">Muat lebih banyak</button>
+            <p id="load-more-info"></p>
         </div>
     </main>
 
-    <div id="modal-zoom" role="dialog" aria-modal="true" aria-label="Zoom gambar">
+    <!-- Sheet filter ukuran & urutan -->
+    <div id="filter-sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+        <div class="sheet-bg" data-tutup></div>
+        <div class="sheet">
+            <div class="sheet-grab"></div>
+            <div class="sheet-head">
+                <h2 id="sheet-title">Filter</h2>
+                <button type="button" class="icon-btn" data-tutup aria-label="Tutup filter">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <h3>Ukuran</h3>
+            <div class="opsi-list" id="opsi-ukuran"></div>
+            <h3>Urutkan</h3>
+            <div class="opsi-list" id="opsi-urut">
+                <button type="button" class="opsi-btn" data-urut="">Standar</button>
+                <button type="button" class="opsi-btn" data-urut="asc">Harga termurah</button>
+                <button type="button" class="opsi-btn" data-urut="desc">Harga termahal</button>
+            </div>
+            <div class="sheet-actions">
+                <button type="button" class="btn-sec" id="sheet-reset">Reset</button>
+                <button type="button" class="btn-pri" id="sheet-apply">Tampilkan produk</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-zoom" role="dialog" aria-modal="true" aria-label="Foto karpet diperbesar">
         <div class="modal-backdrop" onclick="closeZoom()"></div>
-        <button id="modal-close-btn" onclick="closeZoom()" aria-label="Tutup">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24">
-                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
+        <button type="button" id="modal-close-btn" onclick="closeZoom()" aria-label="Tutup foto">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
         <div class="modal-content">
-            <img id="img-zoom" src="" alt="Zoom produk" decoding="async">
+            <img id="img-zoom" src="" alt="Foto karpet" decoding="async">
         </div>
     </div>
 
@@ -447,14 +387,17 @@
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=0`;
         const CACHE_KEY = 'aki_katalog_v4';
         const CACHE_SEGAR = 1 * 60 * 1000; // data di bawah 1 menit tidak diambil ulang
-        const FOTO_ERROR = 'https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error';
+        const FOTO_ERROR = 'https://placehold.co/400x500/e6dccb/6b5a4a?text=Foto+belum+tersedia';
         const PER_HALAMAN = 24;
 
         let semuaProduk = [], lazyObserver = null;
         let dataTampil = [];   // data yang sedang aktif (hasil filter/search/sort)
         let halamanSaat = 0;   // jumlah batch yang sudah ditampilkan
+        const filter = { ukuran: '', urut: '' };   // ukuran & urutan aktif
+        const draft  = { ukuran: '', urut: '' };   // pilihan sementara di sheet filter
 
-        const WA_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 48 48"><path fill="#25D366" d="M4.9 43.3l2.7-9.9C5.9 30.6 5 27.4 5 24 5 13.5 13.5 5 24 5s19 8.5 19 19-8.5 19-19 19c-3.2 0-6.2-.8-8.8-2.3L4.9 43.3z"/><path fill="#fff" d="M33.7 28.3c-.4-.2-2.3-1.1-2.6-1.3-.3-.1-.6-.2-.9.2-.3.4-1 1.3-1.3 1.5-.2.3-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1-2-2.3-2.2-2.7-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.2-.4.3-.7.1-.2 0-.5-.1-.7-.1-.2-1-2.3-1.3-3.1-.3-.8-.7-.7-1-.7h-.8c-.3 0-.7.1-1 .5s-1.4 1.4-1.4 3.3 1.4 3.8 1.6 4.1c.2.3 2.8 4.3 6.8 6 .9.4 1.7.6 2.2.8.9.3 1.8.2 2.4.1.7-.1 2.3-.9 2.6-1.8.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5z"/></svg>`;
+        const ICON_WA = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.2-.8-2.7-1.1-4.4-3.9-4.5-4.1-.1-.2-1.1-1.4-1.1-2.7 0-1.3.7-1.9.9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.4.3.2.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.2 1.3Z"/></svg>`;
+        const ICON_SHARE = `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>`;
 
         /* ───────── Helper ───────── */
 
@@ -488,6 +431,7 @@
         }
 
         function teksHarga(h) { return h > 0 ? 'Rp ' + h.toLocaleString('id-ID') : 'Hubungi kami'; }
+        function teksStok(s)  { return s > 0 ? `Ready · ${s} pcs` : 'Stok habis'; }
 
         // Foto Cloudinary: minta versi yang sudah diperkecil & dikompres otomatis
         function fotoCloudinary(url, lebar) {
@@ -575,7 +519,8 @@
             } catch (err) {
                 if (!adaCache) {
                     document.getElementById('katalog-container').innerHTML =
-                        `<p style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted);font-style:italic">Gagal memuat data. Coba refresh halaman.</p>`;
+                        `<p style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted)">Gagal memuat data. Coba refresh halaman.</p>`;
+                    document.getElementById('status-text').textContent = '';
                 }
                 // Kalau ada data tersimpan, katalog tetap tampil walau sheet gagal diakses
             }
@@ -589,13 +534,11 @@
         // Data baru datang saat customer sudah melihat katalog: pertahankan filter & jumlah produk yang sudah dimuat
         function perbaruiDiam() {
             const koleksiAktif = getKoleksiAktif();
-            const ukuranAktif  = document.getElementById('ukuran-select').value;
             const halaman      = Math.max(1, halamanSaat);
             buatTombolFilter();
             setKoleksiAktif(koleksiAktif);
-            const sel = document.getElementById('ukuran-select');
-            sel.value = [...sel.options].some(o => o.value === ukuranAktif) ? ukuranAktif : '';
-            terapkanFilter({ halaman, scroll: false });
+            if (filter.ukuran && !semuaUkuran().includes(filter.ukuran)) filter.ukuran = '';
+            terapkanFilter({ halaman });
         }
 
         /* ───────── Filter, sort, URL ───────── */
@@ -609,28 +552,32 @@
             document.querySelectorAll('.filter-btn').forEach(b => {
                 const aktif = (b.dataset.koleksi || '').toLowerCase() === (koleksi || '').toLowerCase();
                 b.classList.toggle('active', aktif);
+                b.setAttribute('aria-pressed', aktif);
                 if (aktif) cocok = true;
             });
-            if (!cocok) document.querySelector('.filter-btn').classList.add('active');
+            if (!cocok) {
+                const semua = document.querySelector('.filter-btn');
+                semua.classList.add('active'); semua.setAttribute('aria-pressed', true);
+            }
         }
 
-        function cocokKeyword(p, keyword) {
-            if (!keyword) return true;
-            return (p.koleksi + ' ' + p.nama).toLowerCase().includes(keyword);
+        function semuaUkuran() {
+            return [...new Set(semuaProduk.flatMap(p => p.variasi.map(v => v.ukuran)))]
+                .filter(u => u && u !== '-')
+                .sort((a, b) => luasUkuran(a) - luasUkuran(b) || a.localeCompare(b));
         }
 
-        function getFilteredData() {
+        function getFilteredData(ukuran = filter.ukuran) {
             const keyword = rapikan(document.getElementById('search-input').value).toLowerCase();
-            const ukuran  = document.getElementById('ukuran-select').value;
             const koleksi = getKoleksiAktif();
             return semuaProduk.filter(p =>
                 (!koleksi || p.koleksi === koleksi) &&
-                cocokKeyword(p, keyword) &&
+                (!keyword || (p.koleksi + ' ' + p.nama).toLowerCase().includes(keyword)) &&
                 (!ukuran || p.variasi.some(v => v.ukuran === ukuran))
             );
         }
 
-        // Harga yang dipakai untuk urutan: ukuran terpilih (kalau ada filter), selain itu harga termurah yang masih ada stok
+        // Harga untuk urutan: ukuran terpilih (kalau ada filter), selain itu harga termurah yang masih ada stok
         function hargaUntukUrut(p, ukuran) {
             let pilihan = ukuran ? p.variasi.filter(v => v.ukuran === ukuran) : p.variasi.filter(v => v.stok > 0);
             if (!pilihan.length) pilihan = p.variasi;
@@ -639,14 +586,12 @@
         }
 
         function urutkan(data) {
-            const arah = document.getElementById('sort-select').value;
-            if (!arah) return data;
-            const ukuran = document.getElementById('ukuran-select').value;
+            if (!filter.urut) return data;
             return [...data].sort((a, b) => {
-                const hA = hargaUntukUrut(a, ukuran), hB = hargaUntukUrut(b, ukuran);
+                const hA = hargaUntukUrut(a, filter.ukuran), hB = hargaUntukUrut(b, filter.ukuran);
                 if (hA === null) return 1;   // harga kosong selalu di bawah
                 if (hB === null) return -1;
-                return arah === 'asc' ? hA - hB : hB - hA;
+                return filter.urut === 'asc' ? hA - hB : hB - hA;
             });
         }
 
@@ -654,23 +599,31 @@
         function terapkanFilter({ halaman = 1, scroll = false } = {}) {
             const hasil = urutkan(getFilteredData());
             tampilkanKatalog(hasil, halaman);
-            setStatus(buatPesanStatus(hasil.length));
+            perbaruiStatus(hasil.length);
+            perbaruiTombolFilter();
             perbaruiURL();
-            if (scroll) setTimeout(() => document.getElementById('search-input').scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
+            if (scroll) setTimeout(() => document.querySelector('.status-row').scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
         }
 
-        function buatPesanStatus(n) {
+        function perbaruiStatus(n) {
             const bagian = [];
             const koleksi = getKoleksiAktif();
-            const ukuran  = document.getElementById('ukuran-select').value;
             const keyword = rapikan(document.getElementById('search-input').value);
-            const arah    = document.getElementById('sort-select').value;
-            if (koleksi) bagian.push(`koleksi ${koleksi}`);
-            if (ukuran)  bagian.push(`ukuran ${ukuran}`);
-            if (keyword) bagian.push(`"${keyword}"`);
-            let pesan = bagian.length ? `${n} produk · ${bagian.join(' · ')}` : `${n} produk tersedia`;
-            if (arah) pesan += ` · ${arah === 'asc' ? 'termurah' : 'termahal'} dulu`;
-            return pesan;
+            if (koleksi)       bagian.push(koleksi);
+            if (filter.ukuran) bagian.push(filter.ukuran);
+            if (keyword)       bagian.push(`"${keyword}"`);
+            if (filter.urut)   bagian.push(filter.urut === 'asc' ? 'termurah dulu' : 'termahal dulu');
+            document.getElementById('status-text').textContent =
+                bagian.length ? `${n} produk · ${bagian.join(' · ')}` : `${n} produk tersedia`;
+            document.getElementById('reset-filter').classList.toggle('tampil', bagian.length > 0);
+        }
+
+        function perbaruiTombolFilter() {
+            const n = (filter.ukuran ? 1 : 0) + (filter.urut ? 1 : 0);
+            const btn = document.getElementById('filter-open');
+            btn.classList.toggle('aktif', n > 0);
+            document.getElementById('filter-count').textContent = n || '';
+            btn.setAttribute('aria-label', n ? `Filter, ${n} aktif` : 'Filter ukuran dan urutan');
         }
 
         // Alamat di browser ikut berubah sesuai filter → bisa langsung di-copy dan dibagikan
@@ -678,12 +631,10 @@
             const p = new URLSearchParams();
             const koleksi = getKoleksiAktif();
             const keyword = rapikan(document.getElementById('search-input').value);
-            const ukuran  = document.getElementById('ukuran-select').value;
-            const arah    = document.getElementById('sort-select').value;
-            if (koleksi) p.set('koleksi', koleksi);
-            if (keyword) p.set('q', keyword);
-            if (ukuran)  p.set('ukuran', ukuran);
-            if (arah)    p.set('urut', arah === 'asc' ? 'termurah' : 'termahal');
+            if (koleksi)       p.set('koleksi', koleksi);
+            if (keyword)       p.set('q', keyword);
+            if (filter.ukuran) p.set('ukuran', filter.ukuran);
+            if (filter.urut)   p.set('urut', filter.urut === 'asc' ? 'termurah' : 'termahal');
             const qs = p.toString();
             try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '')); } catch (_) {}
         }
@@ -691,24 +642,20 @@
         // Baca ?koleksi= ?q= ?ukuran= ?urut= saat halaman dibuka
         function bacaURLParam() {
             const p = new URLSearchParams(location.search);
-            const koleksi = rapikan(p.get('koleksi'));
-            const q       = rapikan(p.get('q'));
-            const ukuran  = p.get('ukuran') ? rapikanUkuran(p.get('ukuran')) : '';
-            const urut    = (p.get('urut') || '').toLowerCase();
+            const q      = rapikan(p.get('q'));
+            const ukuran = p.get('ukuran') ? rapikanUkuran(p.get('ukuran')) : '';
+            const urut   = (p.get('urut') || '').toLowerCase();
 
-            setKoleksiAktif(koleksi);
+            setKoleksiAktif(rapikan(p.get('koleksi')));
             document.getElementById('search-input').value = q;
-            const sel = document.getElementById('ukuran-select');
-            sel.value = [...sel.options].some(o => o.value === ukuran) ? ukuran : '';
-            document.getElementById('sort-select').value =
-                (urut === 'termurah' || urut === 'asc') ? 'asc' : (urut === 'termahal' || urut === 'desc') ? 'desc' : '';
+            filter.ukuran = semuaUkuran().includes(ukuran) ? ukuran : '';
+            filter.urut   = (urut === 'termurah' || urut === 'asc') ? 'asc' : (urut === 'termahal' || urut === 'desc') ? 'desc' : '';
 
             terapkanFilter({ scroll: !!q });
         }
 
         function filterKoleksi(btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            setKoleksiAktif(btn.dataset.koleksi);
             terapkanFilter();
         }
 
@@ -717,27 +664,25 @@
             const pesanReset = [];
 
             // Mengetik pencarian → reset filter koleksi & ukuran supaya hasil tidak kosong
-            if (keyword && getKoleksiAktif()) {
-                setKoleksiAktif('');
-                pesanReset.push('koleksi');
-            }
-            const ukuranSelect = document.getElementById('ukuran-select');
-            if (keyword && ukuranSelect.value !== '') {
-                ukuranSelect.value = '';
-                pesanReset.push('ukuran');
-            }
+            if (keyword && getKoleksiAktif()) { setKoleksiAktif(''); pesanReset.push('koleksi'); }
+            if (keyword && filter.ukuran)     { filter.ukuran = ''; pesanReset.push('ukuran'); }
             if (pesanReset.length) tampilkanToast(`Filter ${pesanReset.join(' & ')} direset otomatis`);
 
             terapkanFilter();
         }
 
-        function filterUkuran() { terapkanFilter(); }
-        function sortProduk()   { terapkanFilter(); }
+        function hapusSemuaFilter() {
+            setKoleksiAktif('');
+            document.getElementById('search-input').value = '';
+            filter.ukuran = ''; filter.urut = '';
+            terapkanFilter();
+        }
 
         function buatTombolFilter() {
             const bar = document.getElementById('filter-bar'), frag = document.createDocumentFragment();
             const tambah = (label, koleksi) => {
                 const btn = document.createElement('button');
+                btn.type = 'button';
                 btn.textContent = label.toUpperCase();
                 btn.className = 'filter-btn';
                 btn.dataset.koleksi = koleksi;
@@ -747,28 +692,55 @@
             tambah('Semua', '');
             [...new Set(semuaProduk.map(p => p.koleksi))].forEach(k => tambah(k, k));
             bar.innerHTML = ''; bar.appendChild(frag);
-            bar.firstChild.classList.add('active');
+            setKoleksiAktif('');
 
-            // Dropdown ukuran: urut dari yang terkecil (berdasarkan luas)
-            const semuaUkuran = [...new Set(semuaProduk.flatMap(p => p.variasi.map(v => v.ukuran)))]
-                .filter(u => u && u !== '-')
-                .sort((a, b) => luasUkuran(a) - luasUkuran(b) || a.localeCompare(b));
-            const sel = document.getElementById('ukuran-select');
-            sel.innerHTML = '<option value="">Semua Ukuran</option>';
-            semuaUkuran.forEach(u => {
-                const opt = document.createElement('option');
-                opt.value = u; opt.textContent = u;
-                sel.appendChild(opt);
-            });
+            // Pilihan ukuran di sheet filter: urut dari yang terkecil
+            document.getElementById('opsi-ukuran').innerHTML =
+                `<button type="button" class="opsi-btn" data-ukuran="">Semua</button>` +
+                semuaUkuran().map(u => `<button type="button" class="opsi-btn" data-ukuran="${esc(u)}">${esc(u)}</button>`).join('');
         }
+
+        /* ───────── Sheet filter ───────── */
+
+        function bukaFilter() {
+            draft.ukuran = filter.ukuran; draft.urut = filter.urut;
+            renderDraft();
+            document.getElementById('filter-sheet').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => document.querySelector('#filter-sheet .opsi-btn[aria-pressed="true"]')?.focus(), 50);
+        }
+        function tutupFilter() {
+            document.getElementById('filter-sheet').classList.remove('open');
+            document.body.style.overflow = '';
+            document.getElementById('filter-open').focus();
+        }
+        function renderDraft() {
+            document.querySelectorAll('#opsi-ukuran .opsi-btn').forEach(b => b.setAttribute('aria-pressed', b.dataset.ukuran === draft.ukuran));
+            document.querySelectorAll('#opsi-urut .opsi-btn').forEach(b => b.setAttribute('aria-pressed', b.dataset.urut === draft.urut));
+            const n = getFilteredData(draft.ukuran).length;
+            const apply = document.getElementById('sheet-apply');
+            apply.textContent = n ? `Tampilkan ${n} produk` : 'Tidak ada produk';
+            apply.disabled = !n;
+            apply.style.opacity = n ? '' : '.5';
+        }
+
+        document.getElementById('filter-open').addEventListener('click', bukaFilter);
+        document.getElementById('filter-sheet').addEventListener('click', e => {
+            if (e.target.closest('[data-tutup]')) { tutupFilter(); return; }
+            const uk = e.target.closest('[data-ukuran]');
+            if (uk) { draft.ukuran = uk.dataset.ukuran; renderDraft(); return; }
+            const ur = e.target.closest('[data-urut]');
+            if (ur) { draft.urut = ur.dataset.urut; renderDraft(); }
+        });
+        document.getElementById('sheet-reset').addEventListener('click', () => { draft.ukuran = ''; draft.urut = ''; renderDraft(); });
+        document.getElementById('sheet-apply').addEventListener('click', () => {
+            filter.ukuran = draft.ukuran; filter.urut = draft.urut;
+            tutupFilter();
+            terapkanFilter();
+        });
+        document.getElementById('reset-filter').addEventListener('click', hapusSemuaFilter);
 
         /* ───────── Render katalog ───────── */
-
-        function setStatus(msg) {
-            document.getElementById('status-text').textContent = msg;
-            document.getElementById('status-text').style.display = 'block';
-            document.getElementById('ornament').style.display = 'block';
-        }
 
         function tampilkanKatalog(data, halaman = 1) {
             // Produk yang semua ukurannya habis diletakkan di bawah (urutan lain tetap)
@@ -780,7 +752,10 @@
 
             const container = document.getElementById('katalog-container');
             if (!dataTampil.length) {
-                container.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted);font-style:italic">Produk tidak ditemukan.</p>`;
+                container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted)">
+                    <p style="margin-bottom:16px">Produk tidak ditemukan.</p>
+                    <button type="button" id="load-more-btn-reset" onclick="hapusSemuaFilter()" style="min-height:44px;padding:0 20px;border-radius:999px;border:1.5px solid var(--text);font-weight:700">Lihat semua produk</button>
+                </div>`;
                 updateLoadMore();
                 return;
             }
@@ -820,13 +795,16 @@
             const mulai = halamanSaat * PER_HALAMAN;
             renderBatch();
             const cardBaru = document.querySelectorAll('#katalog-container .card')[mulai];
-            if (cardBaru) cardBaru.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (cardBaru) {
+                cardBaru.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                cardBaru.querySelector('.ukuran-btn, .wa-btn')?.focus({ preventScroll: true });
+            }
         }
+        document.getElementById('load-more-btn').addEventListener('click', muatLebihBanyak);
 
         // Variasi default: ukuran yang difilter → ukuran pertama yang ada stok → ukuran pertama
         function variasiAwal(item) {
-            const filterUkuran = document.getElementById('ukuran-select').value;
-            let i = filterUkuran ? item.variasi.findIndex(v => v.ukuran === filterUkuran) : -1;
+            let i = filter.ukuran ? item.variasi.findIndex(v => v.ukuran === filter.ukuran) : -1;
             if (i < 0) i = item.variasi.findIndex(v => v.stok > 0);
             return i < 0 ? 0 : i;
         }
@@ -835,56 +813,42 @@
             const vi  = variasiAwal(item);
             const def = item.variasi[vi];
             const habis = !(def.stok > 0);
+            const banyak = item.variasi.length > 1;
 
             const ukuranBtns = item.variasi.map((v, j) =>
-                `<button type="button" class="ukuran-btn ${j === vi ? 'selected' : ''}" data-v="${j}">${esc(v.ukuran)}</button>`
+                `<button type="button" class="ukuran-btn ${j === vi ? 'selected' : ''} ${v.stok > 0 ? '' : 'kosong'}" data-v="${j}" aria-pressed="${j === vi}"${v.stok > 0 ? '' : ' aria-label="' + esc(v.ukuran) + ', stok habis"'}>${esc(v.ukuran)}</button>`
             ).join('');
 
             return `
-            <div class="card" data-i="${idx}" data-v="${vi}">
-                <div class="card-img-wrap">
+            <article class="card" data-i="${idx}" data-v="${vi}">
+                <div class="card-img-wrap ${habis ? 'habis' : ''}" role="button" tabindex="0" aria-label="Perbesar foto ${esc(item.koleksi + ' ' + item.nama)}">
                     <img class="lazy-img"
                          data-src="${esc(fotoKecil(def.foto))}"
                          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
                          alt="${esc(item.koleksi + ' ' + item.nama)}" decoding="async">
-                    ${habis ? `<div class="stok-habis-overlay"><span class="stok-habis-badge">Stok Habis</span></div>` : ''}
+                    ${habis ? '<span class="stok-habis-badge">Stok habis</span>' : ''}
                 </div>
                 <div class="card-body">
                     <p class="card-koleksi">${esc(item.koleksi)}</p>
                     <h3 class="card-nama">${esc(item.nama)}</h3>
-                    ${item.variasi.length > 1 ? `
-                    <div>
-                        <p class="ukuran-label">Pilih Ukuran</p>
-                        <div class="ukuran-overlay">${ukuranBtns}</div>
-                    </div>` : `
-                    <div class="ukuran-overlay">${ukuranBtns}</div>`}
+                    ${banyak ? `<p class="ukuran-label">${item.variasi.length} ukuran tersedia:</p>` : ''}
+                    <div class="ukuran-list" role="group" aria-label="Pilih ukuran">${ukuranBtns}</div>
                     <div class="card-footer">
-                        <div class="card-footer-price">
-                            <div class="card-price-wrap">
-                                <span class="card-price-label">Harga</span>
-                                <p class="card-price ${def.harga > 0 ? '' : 'tanya'}">${teksHarga(def.harga)}</p>
-                            </div>
-                        </div>
-                        <div class="card-footer-actions">
-                            <span class="card-stok ${habis ? 'stok-habis' : 'stok-ada'}">● Stok: ${def.stok}</span>
-                            <div style="display:flex;gap:0.3rem;align-items:center">
-                                <button type="button" class="share-btn" aria-label="Bagikan produk">
-                                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-                                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-                                    </svg>
-                                </button>
-                                <a href="${esc(buildWaLink(item, def))}"
-                                   class="wa-btn" target="_blank" rel="noopener noreferrer" aria-label="Tanya lewat WhatsApp">${WA_ICON}</a>
-                            </div>
+                        <p class="card-price ${def.harga > 0 ? '' : 'tanya'}">${teksHarga(def.harga)}</p>
+                        <p class="card-stok ${habis ? 'stok-habis' : 'stok-ada'}">${teksStok(def.stok)}</p>
+                        <div class="card-actions">
+                            <a href="${esc(buildWaLink(item, def))}" class="wa-btn" target="_blank" rel="noopener noreferrer"
+                               aria-label="Tanya ${esc(item.koleksi + ' ' + item.nama)} lewat WhatsApp">${ICON_WA} Tanya</a>
+                            <button type="button" class="share-btn" aria-label="Bagikan produk">${ICON_SHARE}</button>
                         </div>
                     </div>
                 </div>
-            </div>`;
+            </article>`;
         }
 
         // Klik di dalam card ditangani di satu tempat (aman untuk nama yang mengandung tanda kutip)
-        document.getElementById('katalog-container').addEventListener('click', e => {
+        const katalog = document.getElementById('katalog-container');
+        katalog.addEventListener('click', e => {
             const card = e.target.closest('.card[data-i]');
             if (!card) return;
             const item = dataTampil[+card.dataset.i];
@@ -895,7 +859,12 @@
 
             if (e.target.closest('.share-btn')) { shareProduct(item, item.variasi[+card.dataset.v]); return; }
 
-            if (e.target.closest('.card-img-wrap')) openZoom(fotoBesar(item.variasi[+card.dataset.v].foto));
+            if (e.target.closest('.card-img-wrap')) openZoom(fotoBesar(item.variasi[+card.dataset.v].foto), item.koleksi + ' ' + item.nama);
+        });
+        katalog.addEventListener('keydown', e => {
+            if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('card-img-wrap')) {
+                e.preventDefault(); e.target.click();
+            }
         });
 
         function pilihVariasi(card, item, j) {
@@ -920,22 +889,27 @@
 
             const habis = !(v.stok > 0);
             const stok = card.querySelector('.card-stok');
-            stok.textContent = `● Stok: ${v.stok}`;
+            stok.textContent = teksStok(v.stok);
             stok.className = `card-stok ${habis ? 'stok-habis' : 'stok-ada'}`;
 
             const wrap = card.querySelector('.card-img-wrap');
-            let overlay = wrap.querySelector('.stok-habis-overlay');
-            if (habis && !overlay) {
-                overlay = document.createElement('div');
-                overlay.className = 'stok-habis-overlay';
-                overlay.innerHTML = '<span class="stok-habis-badge">Stok Habis</span>';
-                wrap.appendChild(overlay);
-            } else if (!habis && overlay) {
-                overlay.remove();
+            wrap.classList.toggle('habis', habis);
+            let badge = wrap.querySelector('.stok-habis-badge');
+            if (habis && !badge) {
+                badge = document.createElement('span');
+                badge.className = 'stok-habis-badge';
+                badge.textContent = 'Stok habis';
+                wrap.appendChild(badge);
+            } else if (!habis && badge) {
+                badge.remove();
             }
 
             card.querySelector('.wa-btn').href = buildWaLink(item, v);
-            card.querySelectorAll('.ukuran-btn').forEach(b => b.classList.toggle('selected', +b.dataset.v === j));
+            card.querySelectorAll('.ukuran-btn').forEach(b => {
+                const on = +b.dataset.v === j;
+                b.classList.toggle('selected', on);
+                b.setAttribute('aria-pressed', on);
+            });
         }
 
         function linkProduk(item) {
@@ -983,31 +957,42 @@
 
         /* ───────── Zoom & toast ───────── */
 
-        function openZoom(src) {
+        let fokusSebelumZoom = null;
+        function openZoom(src, alt) {
             const img = document.getElementById('img-zoom');
             img.onerror = () => { img.onerror = null; img.src = FOTO_ERROR; };
             img.src = src;
+            img.alt = alt || 'Foto karpet';
+            fokusSebelumZoom = document.activeElement;
             document.getElementById('modal-zoom').style.display = 'flex';
             document.body.style.overflow = 'hidden';
+            document.getElementById('modal-close-btn').focus();
         }
         function closeZoom() {
-            document.getElementById('modal-zoom').style.display = 'none';
+            const modal = document.getElementById('modal-zoom');
+            if (modal.style.display !== 'flex') return;
+            modal.style.display = 'none';
             document.body.style.overflow = '';
+            fokusSebelumZoom?.focus?.();
         }
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeZoom(); });
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            closeZoom();
+            if (document.getElementById('filter-sheet').classList.contains('open')) tutupFilter();
+        });
 
         function tampilkanToast(pesan) {
             let toast = document.getElementById('toast');
             if (!toast) {
                 toast = document.createElement('div');
                 toast.id = 'toast';
+                toast.setAttribute('role', 'status');
                 toast.style.cssText = `
-                    position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(20px);
-                    background:var(--text); color:var(--bg); padding:0.55rem 1.1rem;
-                    border-radius:999px; font-size:0.72rem; font-weight:600;
-                    font-family:'DM Sans',sans-serif; z-index:200; opacity:0;
-                    transition:opacity 0.25s ease, transform 0.25s ease;
-                    white-space:nowrap; pointer-events:none;
+                    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+                    background:var(--text); color:#fff; padding:10px 18px;
+                    border-radius:999px; font-size:14px; font-weight:500;
+                    z-index:200; opacity:0; max-width:calc(100vw - 32px); text-align:center;
+                    transition:opacity .25s ease, transform .25s ease; pointer-events:none;
                 `;
                 document.body.appendChild(toast);
             }
@@ -1021,6 +1006,14 @@
                 toast.style.transform = 'translateX(-50%) translateY(20px)';
             }, 2500);
         }
+
+        // Desktop: scroll mouse di baris koleksi menggeser ke samping
+        document.getElementById('filter-bar').addEventListener('wheel', e => {
+            const bar = e.currentTarget;
+            if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && bar.scrollWidth > bar.clientWidth) {
+                bar.scrollLeft += e.deltaY; e.preventDefault();
+            }
+        }, { passive: false });
 
         document.getElementById('search-input').addEventListener('input', debounce(cariProduk, 250));
         ambilData();
