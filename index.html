@@ -4,15 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aneka Karpet Indah - Katalog Resmi</title>
+    <meta name="description" content="Katalog permadani CV. Aneka Karpet Indah, Yogyakarta. Cek motif, ukuran, harga dan stok terbaru, lalu pesan langsung lewat WhatsApp.">
+    <meta name="theme-color" content="#FDFAF5">
+
+    <!-- Preview link saat dibagikan di WhatsApp / Facebook / Instagram -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CV. Aneka Karpet Indah">
+    <meta property="og:title" content="Katalog Permadani - CV. Aneka Karpet Indah">
+    <meta property="og:description" content="Cek motif, ukuran, harga dan stok karpet terbaru. Pesan langsung lewat WhatsApp.">
+    <meta property="og:url" content="https://aneka-karpet-indah.github.io/katalog-karpet/">
+    <meta property="og:image" content="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg">
+    <meta property="og:locale" content="id_ID">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/jpeg" href="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg">
+    <link rel="apple-touch-icon" href="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;1,600&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://docs.google.com">
     <link rel="preconnect" href="https://i.ibb.co.com">
+    <link rel="preconnect" href="https://res.cloudinary.com">
     <link rel="preload" as="image" href="https://i.ibb.co.com/Gv2LpsVy/Aneka-Karpet-Indah-logo-page-0001.jpg">
-
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         :root {
@@ -28,6 +41,10 @@
             --shadow:    rgba(61,43,31,0.10);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        img { max-width: 100%; }
+        button, input, select { font: inherit; color: inherit; }
+        input[type="search"] { -webkit-appearance: none; appearance: none; }
+        .card-price.tanya { font-size: 0.8rem; color: var(--accent); }
 
         body {
             background-color: var(--bg);
@@ -419,136 +436,333 @@
             </svg>
         </button>
         <div class="modal-content">
-            <img id="img-zoom" src="" alt="Zoom produk" loading="lazy" decoding="async">
+            <img id="img-zoom" src="" alt="Zoom produk" decoding="async">
         </div>
     </div>
 
     <script>
         const SHEET_ID  = '1iLJWtfJntcjZalA7q-FFIUNe8BXGT40za7kMeELXfJk';
         const WA_NUMBER = '6287881807772';
-        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-        const CACHE_KEY = 'aki_katalog_v3';
-        const CACHE_TTL = 1 * 60 * 1000; // 1 menit
+        // headers=0 → baris 1 di sheet selalu dibaca sebagai produk (sheet tidak memakai baris judul)
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=0`;
+        const CACHE_KEY = 'aki_katalog_v4';
+        const CACHE_SEGAR = 1 * 60 * 1000; // data di bawah 1 menit tidak diambil ulang
+        const FOTO_ERROR = 'https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error';
+        const PER_HALAMAN = 24;
 
         let semuaProduk = [], lazyObserver = null;
-        let dataTampil = [];   // data yang sedang aktif (hasil filter/search)
-        let halamanSaat = 0;   // halaman yang sudah ditampilkan
-        const PER_HALAMAN = 24; // jumlah produk per batch
+        let dataTampil = [];   // data yang sedang aktif (hasil filter/search/sort)
+        let halamanSaat = 0;   // jumlah batch yang sudah ditampilkan
 
         const WA_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 48 48"><path fill="#25D366" d="M4.9 43.3l2.7-9.9C5.9 30.6 5 27.4 5 24 5 13.5 13.5 5 24 5s19 8.5 19 19-8.5 19-19 19c-3.2 0-6.2-.8-8.8-2.3L4.9 43.3z"/><path fill="#fff" d="M33.7 28.3c-.4-.2-2.3-1.1-2.6-1.3-.3-.1-.6-.2-.9.2-.3.4-1 1.3-1.3 1.5-.2.3-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1-2-2.3-2.2-2.7-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.2-.4.3-.7.1-.2 0-.5-.1-.7-.1-.2-1-2.3-1.3-3.1-.3-.8-.7-.7-1-.7h-.8c-.3 0-.7.1-1 .5s-1.4 1.4-1.4 3.3 1.4 3.8 1.6 4.1c.2.3 2.8 4.3 6.8 6 .9.4 1.7.6 2.2.8.9.3 1.8.2 2.4.1.7-.1 2.3-.9 2.6-1.8.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5z"/></svg>`;
 
-        function formatRupiah(n) { return parseInt(n).toLocaleString('id-ID'); }
+        /* ───────── Helper ───────── */
+
         function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 
-        document.getElementById('search-input').addEventListener('input', debounce(cariProduk, 250));
+        // Amankan teks dari sheet sebelum dimasukkan ke HTML (tanda kutip, <, & dll)
+        function esc(s) {
+            return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+        }
 
+        // Rapikan spasi: "  Almaya  " → "Almaya"
+        function rapikan(s) { return String(s ?? '').replace(/\s+/g, ' ').trim(); }
+
+        // Samakan format ukuran: "160x210", "160 X 210", "160 × 210" → "160 x 210"
+        function rapikanUkuran(s) {
+            const t = rapikan(s);
+            const m = t.match(/^(\d+(?:[.,]\d+)?)\s*[x×X*]\s*(\d+(?:[.,]\d+)?)/);
+            return m ? `${m[1]} x ${m[2]}` : (t || '-');
+        }
+
+        function luasUkuran(u) {
+            const m = String(u).match(/^(\d+(?:[.,]\d+)?) x (\d+(?:[.,]\d+)?)/);
+            return m ? parseFloat(m[1].replace(',', '.')) * parseFloat(m[2].replace(',', '.')) : Infinity;
+        }
+
+        // Angka dari sel sheet; sel kosong / teks aneh → 0
+        function angka(v) {
+            if (typeof v === 'number' && isFinite(v)) return v;
+            const n = parseInt(String(v ?? '').replace(/[^\d]/g, ''), 10);
+            return isNaN(n) ? 0 : n;
+        }
+
+        function teksHarga(h) { return h > 0 ? 'Rp ' + h.toLocaleString('id-ID') : 'Hubungi kami'; }
+
+        // Foto Cloudinary: minta versi yang sudah diperkecil & dikompres otomatis
+        function fotoCloudinary(url, lebar) {
+            if (!url || !url.includes('res.cloudinary.com') || !url.includes('/image/upload/')) return url;
+            return url.replace(/\/image\/upload\/((?:[a-z]{1,3}_[^/]+\/)*)/, `/image/upload/f_auto,q_auto,w_${lebar},c_limit/`);
+        }
+        const fotoKecil = url => fotoCloudinary(url, 500);
+        const fotoBesar = url => fotoCloudinary(url, 1600);
+
+        /* ───────── Ambil & olah data ───────── */
+
+        function bacaCache() {
+            try { return JSON.parse(localStorage.getItem(CACHE_KEY)); } catch (_) { return null; }
+        }
+        function simpanCache(data) {
+            try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (_) {}
+        }
+
+        async function ambilDariSheet() {
+            const res = await fetch(SHEET_URL, { cache: 'no-store' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const txt = await res.text();
+            const json = JSON.parse(txt.slice(txt.indexOf('(') + 1, txt.lastIndexOf(')')));
+            return olahBaris(json.table.rows);
+        }
+
+        function olahBaris(rows) {
+            const grup = {}, namaKoleksi = {};
+            let uid = 0;
+
+            rows.forEach(row => {
+                const sel = i => (row.c && row.c[i] && row.c[i].v != null) ? row.c[i].v : null;
+                const koleksiRaw = rapikan(sel(0));
+                if (!koleksiRaw) return; // baris kosong
+
+                // Nama koleksi pakai penulisan yang pertama muncul ("Almaya" & "almaya" jadi satu)
+                const kKey = koleksiRaw.toLowerCase();
+                const koleksi = namaKoleksi[kKey] || (namaKoleksi[kKey] = koleksiRaw);
+
+                const namaRaw = rapikan(sel(1));
+                const ukuran  = rapikanUkuran(sel(2));
+                const harga   = angka(sel(3));
+                const stok    = angka(sel(4));
+                const foto    = rapikan(sel(5));
+
+                const standalone = !namaRaw || namaRaw === '-' || namaRaw.toLowerCase() === 'motif baru';
+                const id = standalone ? `standalone-${uid++}` : `${kKey}|${namaRaw.toLowerCase()}`;
+                if (!grup[id]) grup[id] = { koleksi, nama: namaRaw || 'Motif Baru', fotoUtama: '', variasi: [] };
+                const g = grup[id];
+                if (!g.fotoUtama && foto && foto !== '-') g.fotoUtama = foto;
+                const fotoFinal = (foto && foto !== '-') ? foto : g.fotoUtama;
+
+                // Deduplikasi: ukuran sama dalam satu produk → pakai baris paling bawah
+                const v = { ukuran, harga, stok, foto: fotoFinal };
+                const idx = g.variasi.findIndex(x => x.ukuran === ukuran);
+                if (idx >= 0) g.variasi[idx] = v; else g.variasi.push(v);
+            });
+
+            const hasil = Object.values(grup);
+            hasil.forEach(p => {
+                p.variasi.forEach(v => { if (!v.foto) v.foto = p.fotoUtama; });
+                p.variasi.sort((a, b) => luasUkuran(a.ukuran) - luasUkuran(b.ukuran));
+            });
+            return hasil;
+        }
+
+        // Tampilkan data tersimpan dulu (instan), lalu perbarui diam-diam dari sheet
         async function ambilData() {
-            try {
-                const cached = sessionStorage.getItem(CACHE_KEY);
-                if (cached) {
-                    const { ts, data } = JSON.parse(cached);
-                    if (Date.now() - ts < CACHE_TTL) {
-                        semuaProduk = data;
-                        buatTombolFilter();
-                        bacaURLParam(); // cek URL param setelah data siap
-                        setStatus(`${semuaProduk.length} produk tersedia`);
-                        return;
-                    }
-                }
-            } catch (_) {}
+            const cache = bacaCache();
+            const adaCache = cache && Array.isArray(cache.data) && cache.data.length;
+
+            if (adaCache) {
+                semuaProduk = cache.data;
+                siapkanHalaman();
+                if (Date.now() - cache.ts < CACHE_SEGAR) return;
+            }
 
             try {
-                const res  = await fetch(SHEET_URL);
-                const txt  = await res.text();
-                const json = JSON.parse(txt.substring(47, txt.length - 2));
-                let tempGroup = {}, uid = 0;
-
-                json.table.rows.forEach(row => {
-                    if (!row.c[0]) return;
-                    const koleksi = String(row.c[0].v);
-                    const namaRaw = row.c[1] ? String(row.c[1].v).trim() : '';
-                    const ukuran  = row.c[2] ? String(row.c[2].v) : '-';
-                    const harga   = row.c[3] ? row.c[3].v : 0;
-                    const stok    = row.c[4] ? row.c[4].v : 0;
-                    const foto    = row.c[5] ? String(row.c[5].v) : '';
-                    const isStandalone = namaRaw === '' || namaRaw === '-' || namaRaw.toLowerCase() === 'motif baru';
-                    const id = isStandalone ? `standalone-${uid++}` : `${koleksi}-${namaRaw}`;
-                    if (!tempGroup[id]) tempGroup[id] = { koleksi, nama: namaRaw || 'Motif Baru', fotoUtama: foto, variasi: [] };
-                    const fotoFinal = (foto && foto !== '-') ? foto : tempGroup[id].fotoUtama;
-                    // Deduplication: jika ukuran sama sudah ada, timpa dengan data terbaru
-                    const idxExist = tempGroup[id].variasi.findIndex(v => v.ukuran === ukuran);
-                    if (idxExist >= 0) {
-                        tempGroup[id].variasi[idxExist] = { ukuran, harga, stok, foto: fotoFinal };
-                    } else {
-                        tempGroup[id].variasi.push({ ukuran, harga, stok, foto: fotoFinal });
-                    }
-                });
-
-                semuaProduk = Object.values(tempGroup);
-                // Sort variasi tiap produk dari ukuran terkecil ke terbesar (berdasarkan luas)
-                semuaProduk.forEach(p => {
-                    p.variasi.sort((a, b) => {
-                        const luas = u => {
-                            const parts = u.split('x').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
-                            return parts.length >= 2 ? parts[0] * parts[1] : 0;
-                        };
-                        return luas(a.ukuran) - luas(b.ukuran);
-                    });
-                });
-                try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: semuaProduk })); } catch(_) {}
-                buatTombolFilter();
-                bacaURLParam(); // cek URL param setelah data siap
-                setStatus(`${semuaProduk.length} produk tersedia`);
+                const baru = await ambilDariSheet();
+                const berubah = !adaCache || JSON.stringify(baru) !== JSON.stringify(cache.data);
+                simpanCache(baru);
+                if (!berubah) return;
+                semuaProduk = baru;
+                if (adaCache) perbaruiDiam(); else siapkanHalaman();
             } catch (err) {
-                document.getElementById('katalog-container').innerHTML =
-                    `<p style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted);font-style:italic">Gagal memuat data. Coba refresh halaman.</p>`;
+                if (!adaCache) {
+                    document.getElementById('katalog-container').innerHTML =
+                        `<p style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted);font-style:italic">Gagal memuat data. Coba refresh halaman.</p>`;
+                }
+                // Kalau ada data tersimpan, katalog tetap tampil walau sheet gagal diakses
             }
         }
 
-        // Baca URL parameter ?q= dan ?koleksi= saat halaman dibuka
+        function siapkanHalaman() {
+            buatTombolFilter();
+            bacaURLParam();
+        }
+
+        // Data baru datang saat customer sudah melihat katalog: pertahankan filter & jumlah produk yang sudah dimuat
+        function perbaruiDiam() {
+            const koleksiAktif = getKoleksiAktif();
+            const ukuranAktif  = document.getElementById('ukuran-select').value;
+            const halaman      = Math.max(1, halamanSaat);
+            buatTombolFilter();
+            setKoleksiAktif(koleksiAktif);
+            const sel = document.getElementById('ukuran-select');
+            sel.value = [...sel.options].some(o => o.value === ukuranAktif) ? ukuranAktif : '';
+            terapkanFilter({ halaman, scroll: false });
+        }
+
+        /* ───────── Filter, sort, URL ───────── */
+
+        function getKoleksiAktif() {
+            const btn = document.querySelector('.filter-btn.active');
+            return btn ? (btn.dataset.koleksi || '') : '';
+        }
+        function setKoleksiAktif(koleksi) {
+            let cocok = false;
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                const aktif = (b.dataset.koleksi || '').toLowerCase() === (koleksi || '').toLowerCase();
+                b.classList.toggle('active', aktif);
+                if (aktif) cocok = true;
+            });
+            if (!cocok) document.querySelector('.filter-btn').classList.add('active');
+        }
+
+        function cocokKeyword(p, keyword) {
+            if (!keyword) return true;
+            return (p.koleksi + ' ' + p.nama).toLowerCase().includes(keyword);
+        }
+
+        function getFilteredData() {
+            const keyword = rapikan(document.getElementById('search-input').value).toLowerCase();
+            const ukuran  = document.getElementById('ukuran-select').value;
+            const koleksi = getKoleksiAktif();
+            return semuaProduk.filter(p =>
+                (!koleksi || p.koleksi === koleksi) &&
+                cocokKeyword(p, keyword) &&
+                (!ukuran || p.variasi.some(v => v.ukuran === ukuran))
+            );
+        }
+
+        // Harga yang dipakai untuk urutan: ukuran terpilih (kalau ada filter), selain itu harga termurah yang masih ada stok
+        function hargaUntukUrut(p, ukuran) {
+            let pilihan = ukuran ? p.variasi.filter(v => v.ukuran === ukuran) : p.variasi.filter(v => v.stok > 0);
+            if (!pilihan.length) pilihan = p.variasi;
+            const harga = pilihan.map(v => v.harga).filter(h => h > 0);
+            return harga.length ? Math.min(...harga) : null;
+        }
+
+        function urutkan(data) {
+            const arah = document.getElementById('sort-select').value;
+            if (!arah) return data;
+            const ukuran = document.getElementById('ukuran-select').value;
+            return [...data].sort((a, b) => {
+                const hA = hargaUntukUrut(a, ukuran), hB = hargaUntukUrut(b, ukuran);
+                if (hA === null) return 1;   // harga kosong selalu di bawah
+                if (hB === null) return -1;
+                return arah === 'asc' ? hA - hB : hB - hA;
+            });
+        }
+
+        // Satu pintu untuk semua perubahan filter → urutan harga tidak pernah hilang
+        function terapkanFilter({ halaman = 1, scroll = false } = {}) {
+            const hasil = urutkan(getFilteredData());
+            tampilkanKatalog(hasil, halaman);
+            setStatus(buatPesanStatus(hasil.length));
+            perbaruiURL();
+            if (scroll) setTimeout(() => document.getElementById('search-input').scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
+        }
+
+        function buatPesanStatus(n) {
+            const bagian = [];
+            const koleksi = getKoleksiAktif();
+            const ukuran  = document.getElementById('ukuran-select').value;
+            const keyword = rapikan(document.getElementById('search-input').value);
+            const arah    = document.getElementById('sort-select').value;
+            if (koleksi) bagian.push(`koleksi ${koleksi}`);
+            if (ukuran)  bagian.push(`ukuran ${ukuran}`);
+            if (keyword) bagian.push(`"${keyword}"`);
+            let pesan = bagian.length ? `${n} produk · ${bagian.join(' · ')}` : `${n} produk tersedia`;
+            if (arah) pesan += ` · ${arah === 'asc' ? 'termurah' : 'termahal'} dulu`;
+            return pesan;
+        }
+
+        // Alamat di browser ikut berubah sesuai filter → bisa langsung di-copy dan dibagikan
+        function perbaruiURL() {
+            const p = new URLSearchParams();
+            const koleksi = getKoleksiAktif();
+            const keyword = rapikan(document.getElementById('search-input').value);
+            const ukuran  = document.getElementById('ukuran-select').value;
+            const arah    = document.getElementById('sort-select').value;
+            if (koleksi) p.set('koleksi', koleksi);
+            if (keyword) p.set('q', keyword);
+            if (ukuran)  p.set('ukuran', ukuran);
+            if (arah)    p.set('urut', arah === 'asc' ? 'termurah' : 'termahal');
+            const qs = p.toString();
+            try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '')); } catch (_) {}
+        }
+
+        // Baca ?koleksi= ?q= ?ukuran= ?urut= saat halaman dibuka
         function bacaURLParam() {
-            const params   = new URLSearchParams(window.location.search);
-            const q        = params.get('q');
-            const koleksi  = params.get('koleksi');
+            const p = new URLSearchParams(location.search);
+            const koleksi = rapikan(p.get('koleksi'));
+            const q       = rapikan(p.get('q'));
+            const ukuran  = p.get('ukuran') ? rapikanUkuran(p.get('ukuran')) : '';
+            const urut    = (p.get('urut') || '').toLowerCase();
 
-            if (koleksi && koleksi.trim()) {
-                // Aktifkan filter tombol koleksi yang sesuai
-                const target = koleksi.trim().toUpperCase();
-                let cocok = false;
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.textContent.trim().toUpperCase() === target) {
-                        btn.classList.add('active');
-                        cocok = true;
-                    }
-                });
-                // Fallback ke SEMUA jika tidak ditemukan
-                if (!cocok) document.querySelector('.filter-btn').classList.add('active');
+            setKoleksiAktif(koleksi);
+            document.getElementById('search-input').value = q;
+            const sel = document.getElementById('ukuran-select');
+            sel.value = [...sel.options].some(o => o.value === ukuran) ? ukuran : '';
+            document.getElementById('sort-select').value =
+                (urut === 'termurah' || urut === 'asc') ? 'asc' : (urut === 'termahal' || urut === 'desc') ? 'desc' : '';
 
-                const hasil = semuaProduk.filter(p =>
-                    p.koleksi.toLowerCase() === koleksi.trim().toLowerCase()
-                );
-                tampilkanKatalog(hasil);
-                setStatus(`${hasil.length} produk koleksi "${koleksi.trim()}"`);
-
-            } else if (q && q.trim()) {
-                const searchInput = document.getElementById('search-input');
-                searchInput.value = q.trim();
-                const keyword = q.trim().toLowerCase();
-                const hasil = semuaProduk.filter(p => {
-                    const gabungan = (p.koleksi + ' ' + p.nama).toLowerCase();
-                    return p.nama.toLowerCase().includes(keyword) ||
-                           p.koleksi.toLowerCase().includes(keyword) ||
-                           gabungan.includes(keyword);
-                });
-                tampilkanKatalog(hasil);
-                setStatus(`${hasil.length} produk ditemukan untuk "${q.trim()}"`);
-                setTimeout(() => searchInput.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
-
-            } else {
-                tampilkanKatalog(semuaProduk);
-            }
+            terapkanFilter({ scroll: !!q });
         }
+
+        function filterKoleksi(btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            terapkanFilter();
+        }
+
+        function cariProduk() {
+            const keyword = rapikan(document.getElementById('search-input').value);
+            const pesanReset = [];
+
+            // Mengetik pencarian → reset filter koleksi & ukuran supaya hasil tidak kosong
+            if (keyword && getKoleksiAktif()) {
+                setKoleksiAktif('');
+                pesanReset.push('koleksi');
+            }
+            const ukuranSelect = document.getElementById('ukuran-select');
+            if (keyword && ukuranSelect.value !== '') {
+                ukuranSelect.value = '';
+                pesanReset.push('ukuran');
+            }
+            if (pesanReset.length) tampilkanToast(`Filter ${pesanReset.join(' & ')} direset otomatis`);
+
+            terapkanFilter();
+        }
+
+        function filterUkuran() { terapkanFilter(); }
+        function sortProduk()   { terapkanFilter(); }
+
+        function buatTombolFilter() {
+            const bar = document.getElementById('filter-bar'), frag = document.createDocumentFragment();
+            const tambah = (label, koleksi) => {
+                const btn = document.createElement('button');
+                btn.textContent = label.toUpperCase();
+                btn.className = 'filter-btn';
+                btn.dataset.koleksi = koleksi;
+                btn.onclick = e => filterKoleksi(e.currentTarget);
+                frag.appendChild(btn);
+            };
+            tambah('Semua', '');
+            [...new Set(semuaProduk.map(p => p.koleksi))].forEach(k => tambah(k, k));
+            bar.innerHTML = ''; bar.appendChild(frag);
+            bar.firstChild.classList.add('active');
+
+            // Dropdown ukuran: urut dari yang terkecil (berdasarkan luas)
+            const semuaUkuran = [...new Set(semuaProduk.flatMap(p => p.variasi.map(v => v.ukuran)))]
+                .filter(u => u && u !== '-')
+                .sort((a, b) => luasUkuran(a) - luasUkuran(b) || a.localeCompare(b));
+            const sel = document.getElementById('ukuran-select');
+            sel.innerHTML = '<option value="">Semua Ukuran</option>';
+            semuaUkuran.forEach(u => {
+                const opt = document.createElement('option');
+                opt.value = u; opt.textContent = u;
+                sel.appendChild(opt);
+            });
+        }
+
+        /* ───────── Render katalog ───────── */
 
         function setStatus(msg) {
             document.getElementById('status-text').textContent = msg;
@@ -556,10 +770,10 @@
             document.getElementById('ornament').style.display = 'block';
         }
 
-        function tampilkanKatalog(data) {
-            // Produk stok habis (semua variasi habis) diletakkan di bawah
-            const adaStok   = data.filter(p => p.variasi.some(v => v.stok != 0));
-            const stokHabis = data.filter(p => p.variasi.every(v => v.stok == 0));
+        function tampilkanKatalog(data, halaman = 1) {
+            // Produk yang semua ukurannya habis diletakkan di bawah (urutan lain tetap)
+            const adaStok   = data.filter(p => p.variasi.some(v => v.stok > 0));
+            const stokHabis = data.filter(p => !p.variasi.some(v => v.stok > 0));
             dataTampil  = [...adaStok, ...stokHabis];
             halamanSaat = 0;
             if (lazyObserver) lazyObserver.disconnect();
@@ -570,20 +784,15 @@
                 updateLoadMore();
                 return;
             }
-
             container.innerHTML = '';
-            renderBatch();
+            for (let i = 0; i < halaman && halamanSaat * PER_HALAMAN < dataTampil.length; i++) renderBatch();
         }
 
         function renderBatch() {
             const container = document.getElementById('katalog-container');
             const mulai = halamanSaat * PER_HALAMAN;
             const batch = dataTampil.slice(mulai, mulai + PER_HALAMAN);
-
-            // Hitung offset index agar id card unik antar batch
-            const html = batch.map((item, i) => buatCardHTML(item, mulai + i)).join('');
-            container.insertAdjacentHTML('beforeend', html);
-
+            container.insertAdjacentHTML('beforeend', batch.map((item, i) => buatCardHTML(item, mulai + i)).join(''));
             halamanSaat++;
             initLazyLoading();
             updateLoadMore();
@@ -591,62 +800,58 @@
 
         function updateLoadMore() {
             const wrap = document.getElementById('load-more-wrap');
+            const btn  = document.getElementById('load-more-btn');
             const info = document.getElementById('load-more-info');
-            const sudahTampil = Math.min(halamanSaat * PER_HALAMAN, dataTampil.length);
-            const sisa = dataTampil.length - sudahTampil;
+            const total = dataTampil.length;
+            const sudahTampil = Math.min(halamanSaat * PER_HALAMAN, total);
 
-            if (sisa > 0) {
-                wrap.style.display = 'block';
-                info.textContent = `Menampilkan ${sudahTampil} dari ${dataTampil.length} produk`;
+            if (total <= PER_HALAMAN) { wrap.style.display = 'none'; return; }
+            wrap.style.display = 'block';
+            if (sudahTampil < total) {
+                btn.style.display = 'inline-block';
+                info.textContent = `Menampilkan ${sudahTampil} dari ${total} produk`;
             } else {
-                wrap.style.display = dataTampil.length > PER_HALAMAN ? 'block' : 'none';
-                if (dataTampil.length > PER_HALAMAN) {
-                    document.getElementById('load-more-btn').style.display = 'none';
-                    info.textContent = `Semua ${dataTampil.length} produk sudah ditampilkan`;
-                }
+                btn.style.display = 'none';
+                info.textContent = `Semua ${total} produk sudah ditampilkan`;
             }
         }
 
         function muatLebihBanyak() {
+            const mulai = halamanSaat * PER_HALAMAN;
             renderBatch();
-            // Scroll sedikit ke bawah agar customer tahu konten baru muncul
-            const container = document.getElementById('katalog-container');
-            const cards = container.querySelectorAll('.card');
-            const cardBaru = cards[halamanSaat * PER_HALAMAN - PER_HALAMAN];
+            const cardBaru = document.querySelectorAll('#katalog-container .card')[mulai];
             if (cardBaru) cardBaru.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function buatCardHTML(item, idx) {
-            const cid = `c${idx}`;
-
-            // Pilih variasi default:
-            // 1. Kalau ada filter ukuran aktif → pakai variasi yang cocok
-            // 2. Tidak ada filter → cari variasi pertama yang masih ada stok
-            // 3. Semua habis → fallback ke variasi[0]
+        // Variasi default: ukuran yang difilter → ukuran pertama yang ada stok → ukuran pertama
+        function variasiAwal(item) {
             const filterUkuran = document.getElementById('ukuran-select').value;
-            const variasiCocok = filterUkuran
-                ? (item.variasi.find(v => v.ukuran === filterUkuran) || item.variasi[0])
-                : (item.variasi.find(v => v.stok != 0) || item.variasi[0]);
-            const def = variasiCocok;
+            let i = filterUkuran ? item.variasi.findIndex(v => v.ukuran === filterUkuran) : -1;
+            if (i < 0) i = item.variasi.findIndex(v => v.stok > 0);
+            return i < 0 ? 0 : i;
+        }
 
-            const stokHabis = def.stok == 0;
-            const ukuranBtns = item.variasi.map((v) =>
-                `<button class="ukuran-btn ${v.ukuran === def.ukuran ? 'selected' : ''}" onclick="updVar('${cid}','${v.ukuran}','${v.harga}','${v.stok}',this,'${v.foto}')">${v.ukuran}</button>`
+        function buatCardHTML(item, idx) {
+            const vi  = variasiAwal(item);
+            const def = item.variasi[vi];
+            const habis = !(def.stok > 0);
+
+            const ukuranBtns = item.variasi.map((v, j) =>
+                `<button type="button" class="ukuran-btn ${j === vi ? 'selected' : ''}" data-v="${j}">${esc(v.ukuran)}</button>`
             ).join('');
+
             return `
-            <div class="card">
+            <div class="card" data-i="${idx}" data-v="${vi}">
                 <div class="card-img-wrap">
-                    <img id="${cid}-img" class="lazy-img"
-                         data-src="${def.foto}"
+                    <img class="lazy-img"
+                         data-src="${esc(fotoKecil(def.foto))}"
                          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                         alt="${item.nama}" loading="lazy" decoding="async"
-                         onclick="openZoom(this.src)"
-                         onerror="this.src='https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error'">
-                    ${stokHabis ? `<div class="stok-habis-overlay"><span class="stok-habis-badge">Stok Habis</span></div>` : ''}
+                         alt="${esc(item.koleksi + ' ' + item.nama)}" decoding="async">
+                    ${habis ? `<div class="stok-habis-overlay"><span class="stok-habis-badge">Stok Habis</span></div>` : ''}
                 </div>
                 <div class="card-body">
-                    <p class="card-koleksi">${item.koleksi}</p>
-                    <h3 class="card-nama">${item.nama}</h3>
+                    <p class="card-koleksi">${esc(item.koleksi)}</p>
+                    <h3 class="card-nama">${esc(item.nama)}</h3>
                     ${item.variasi.length > 1 ? `
                     <div>
                         <p class="ukuran-label">Pilih Ukuran</p>
@@ -657,20 +862,20 @@
                         <div class="card-footer-price">
                             <div class="card-price-wrap">
                                 <span class="card-price-label">Harga</span>
-                                <p id="${cid}-h" class="card-price">Rp ${formatRupiah(def.harga)}</p>
+                                <p class="card-price ${def.harga > 0 ? '' : 'tanya'}">${teksHarga(def.harga)}</p>
                             </div>
                         </div>
                         <div class="card-footer-actions">
-                            <span id="${cid}-s" class="card-stok ${stokHabis?'stok-habis':'stok-ada'}">● Stok: ${def.stok}</span>
+                            <span class="card-stok ${habis ? 'stok-habis' : 'stok-ada'}">● Stok: ${def.stok}</span>
                             <div style="display:flex;gap:0.3rem;align-items:center">
-                                <button class="share-btn" onclick="shareProduct('${item.koleksi}','${item.nama}','${def.ukuran}','${def.foto}')" aria-label="Bagikan produk">
+                                <button type="button" class="share-btn" aria-label="Bagikan produk">
                                     <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                                         <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
                                         <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
                                     </svg>
                                 </button>
-                                <a id="${cid}-wa" href="${buildWaLink(item.koleksi,item.nama,def.ukuran,def.foto)}"
-                                   class="wa-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">${WA_ICON}</a>
+                                <a href="${esc(buildWaLink(item, def))}"
+                                   class="wa-btn" target="_blank" rel="noopener noreferrer" aria-label="Tanya lewat WhatsApp">${WA_ICON}</a>
                             </div>
                         </div>
                     </div>
@@ -678,193 +883,119 @@
             </div>`;
         }
 
-        function buildWaLink(k, n, u, f) {
-            const baseUrl    = window.location.origin + window.location.pathname;
-            const query      = encodeURIComponent(k + ' ' + n);
-            const katalogUrl = baseUrl + '?q=' + query;
-            const pesan      = 'Halo Aneka Karpet Indah, saya mau tanya karpet '
-                + k + ' ' + n + ' ukuran ' + u + '.'
-                + '\nLihat di katalog: ' + katalogUrl;
+        // Klik di dalam card ditangani di satu tempat (aman untuk nama yang mengandung tanda kutip)
+        document.getElementById('katalog-container').addEventListener('click', e => {
+            const card = e.target.closest('.card[data-i]');
+            if (!card) return;
+            const item = dataTampil[+card.dataset.i];
+            if (!item) return;
+
+            const ukBtn = e.target.closest('.ukuran-btn');
+            if (ukBtn) { pilihVariasi(card, item, +ukBtn.dataset.v); return; }
+
+            if (e.target.closest('.share-btn')) { shareProduct(item, item.variasi[+card.dataset.v]); return; }
+
+            if (e.target.closest('.card-img-wrap')) openZoom(fotoBesar(item.variasi[+card.dataset.v].foto));
+        });
+
+        function pilihVariasi(card, item, j) {
+            const v = item.variasi[j];
+            if (!v) return;
+            card.dataset.v = j;
+
+            const img = card.querySelector('.lazy-img');
+            const src = fotoKecil(v.foto);
+            img.dataset.src = src;
+            if (img.getAttribute('src') !== src) {
+                img.classList.remove('loaded');
+                img.onload  = () => img.classList.add('loaded');
+                img.onerror = () => { img.onerror = null; img.src = FOTO_ERROR; img.classList.add('loaded'); };
+                img.src = src;
+                if (lazyObserver) lazyObserver.unobserve(img);
+            }
+
+            const harga = card.querySelector('.card-price');
+            harga.textContent = teksHarga(v.harga);
+            harga.classList.toggle('tanya', !(v.harga > 0));
+
+            const habis = !(v.stok > 0);
+            const stok = card.querySelector('.card-stok');
+            stok.textContent = `● Stok: ${v.stok}`;
+            stok.className = `card-stok ${habis ? 'stok-habis' : 'stok-ada'}`;
+
+            const wrap = card.querySelector('.card-img-wrap');
+            let overlay = wrap.querySelector('.stok-habis-overlay');
+            if (habis && !overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'stok-habis-overlay';
+                overlay.innerHTML = '<span class="stok-habis-badge">Stok Habis</span>';
+                wrap.appendChild(overlay);
+            } else if (!habis && overlay) {
+                overlay.remove();
+            }
+
+            card.querySelector('.wa-btn').href = buildWaLink(item, v);
+            card.querySelectorAll('.ukuran-btn').forEach(b => b.classList.toggle('selected', +b.dataset.v === j));
+        }
+
+        function linkProduk(item) {
+            return location.origin + location.pathname + '?q=' + encodeURIComponent(item.koleksi + ' ' + item.nama);
+        }
+
+        function buildWaLink(item, v) {
+            const pesan = `Halo Aneka Karpet Indah, saya mau tanya karpet ${item.koleksi} ${item.nama} ukuran ${v.ukuran}.`
+                + `\nLihat di katalog: ${linkProduk(item)}`;
             return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(pesan);
         }
 
-        function initLazyLoading() {
-            lazyObserver = new IntersectionObserver((entries, obs) => {
-                entries.forEach(e => {
-                    if (!e.isIntersecting) return;
-                    const img = e.target, src = img.getAttribute('data-src');
-                    if (!src) return;
-                    img.src = src;
-                    img.onload  = () => img.classList.add('loaded');
-                    img.onerror = () => { img.src='https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error'; img.classList.add('loaded'); };
-                    obs.unobserve(img);
-                });
-            }, { rootMargin: '200px 0px' });
-            document.querySelectorAll('.lazy-img').forEach(img => lazyObserver.observe(img));
-        }
-
-        function updVar(cid, u, h, s, btn, f) {
-            const img = document.getElementById(`${cid}-img`);
-            img.classList.remove('loaded'); img.src = f;
-            img.onload  = () => img.classList.add('loaded');
-            img.onerror = () => { img.src='https://placehold.co/400x500/e8e0d0/9b8b79?text=Foto+Error'; img.classList.add('loaded'); };
-
-            document.getElementById(`${cid}-h`).textContent = `Rp ${formatRupiah(h)}`;
-            const sel = document.getElementById(`${cid}-s`);
-            sel.textContent = `● Stok: ${s}`;
-            sel.className = `card-stok ${s != 0 ? 'stok-ada' : 'stok-habis'}`;
-
-            // Update overlay stok habis
-            const wrap = img.closest('.card-img-wrap');
-            let overlay = wrap.querySelector('.stok-habis-overlay');
-            if (s == 0) {
-                if (!overlay) {
-                    overlay = document.createElement('div');
-                    overlay.className = 'stok-habis-overlay';
-                    overlay.innerHTML = '<span class="stok-habis-badge">Stok Habis</span>';
-                    wrap.appendChild(overlay);
-                }
-            } else {
-                if (overlay) overlay.remove();
-            }
-
-            const card = btn.closest('.card');
-            const kol  = card.querySelector('.card-koleksi').textContent.trim();
-            const nam  = card.querySelector('.card-nama').textContent.trim();
-            document.getElementById(`${cid}-wa`).href = buildWaLink(kol, nam, u, f);
-
-            // Update share button data
-            const shareBtn = card.querySelector('.share-btn');
-            if (shareBtn) {
-                shareBtn.setAttribute('onclick', `shareProduct('${kol}','${nam}','${u}','${f}')`);
-            }
-
-            btn.closest('.ukuran-overlay').querySelectorAll('.ukuran-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-        }
-
-        function buatTombolFilter() {
-            const bar = document.getElementById('filter-bar'), frag = document.createDocumentFragment();
-            const all = document.createElement('button');
-            all.textContent='SEMUA'; all.className='filter-btn active';
-            all.onclick = e => filterKoleksi('Semua', e.currentTarget); frag.appendChild(all);
-            [...new Set(semuaProduk.map(p=>p.koleksi))].forEach(k => {
-                const btn = document.createElement('button');
-                btn.textContent=k.toUpperCase(); btn.className='filter-btn';
-                btn.onclick = e => filterKoleksi(k, e.currentTarget); frag.appendChild(btn);
-            });
-            bar.innerHTML=''; bar.appendChild(frag);
-
-            // Isi dropdown ukuran dari semua variasi yang ada
-            const semuaUkuran = [...new Set(
-                semuaProduk.flatMap(p => p.variasi.map(v => v.ukuran))
-            )].filter(u => u && u !== '-').sort();
-            const sel = document.getElementById('ukuran-select');
-            sel.innerHTML = '<option value="">Semua Ukuran</option>';
-            semuaUkuran.forEach(u => {
-                const opt = document.createElement('option');
-                opt.value = u; opt.textContent = u;
-                sel.appendChild(opt);
-            });
-        }
-
-        function getFilteredData() {
-            const keyword = document.getElementById('search-input').value.toLowerCase().trim();
-            const ukuran  = document.getElementById('ukuran-select').value;
-            const koleksiBtn = document.querySelector('.filter-btn.active');
-            const koleksi = koleksiBtn ? koleksiBtn.textContent.trim() : 'SEMUA';
-
-            return semuaProduk.filter(p => {
-                const matchKoleksi = koleksi === 'SEMUA' || p.koleksi.toUpperCase() === koleksi;
-                const gabungan     = (p.koleksi + ' ' + p.nama).toLowerCase();
-                const matchKeyword = !keyword || p.nama.toLowerCase().includes(keyword) || p.koleksi.toLowerCase().includes(keyword) || gabungan.includes(keyword);
-                const matchUkuran  = !ukuran  || p.variasi.some(v => v.ukuran === ukuran);
-                return matchKoleksi && matchKeyword && matchUkuran;
-            });
-        }
-
-        function sortProduk() {
-            const arah = document.getElementById('sort-select').value;
-            if (!arah) { tampilkanKatalog(getFilteredData()); return; }
-            const sorted = [...getFilteredData()].sort((a, b) => {
-                const hA = Math.min(...a.variasi.map(v => v.harga));
-                const hB = Math.min(...b.variasi.map(v => v.harga));
-                return arah === 'asc' ? hA - hB : hB - hA;
-            });
-            document.getElementById('load-more-btn').style.display = 'inline-block';
-            tampilkanKatalog(sorted);
-            setStatus(`${sorted.length} produk diurutkan ${arah==='asc'?'termurah':'termahal'}`);
-        }
-
-        function shareProduct(koleksi, nama, ukuran, foto) {
-            const baseUrl  = window.location.origin + window.location.pathname;
-            const query    = encodeURIComponent(koleksi + ' ' + nama);
-            const shareUrl = baseUrl + '?q=' + query;
-            const teks     = `Lihat karpet ${koleksi} ${nama} ukuran ${ukuran} di Aneka Karpet Indah!\n${shareUrl}`;
-
+        function shareProduct(item, v) {
+            const teks = `Lihat karpet ${item.koleksi} ${item.nama} ukuran ${v.ukuran} di Aneka Karpet Indah!\n${linkProduk(item)}`;
             if (navigator.share) {
                 // Kirim hanya text agar link tidak dobel di HP
-                navigator.share({ title: `${koleksi} ${nama}`, text: teks })
-                    .catch(() => {});
-            } else {
+                navigator.share({ title: `${item.koleksi} ${item.nama}`, text: teks }).catch(() => {});
+            } else if (navigator.clipboard) {
                 navigator.clipboard.writeText(teks)
                     .then(() => tampilkanToast('Link produk disalin!'))
                     .catch(() => tampilkanToast('Gagal menyalin link'));
+            } else {
+                tampilkanToast('Browser tidak mendukung bagikan');
             }
         }
 
-        function filterKoleksi(kat, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-            btn.classList.add('active');
-            const result = getFilteredData();
-            document.getElementById('load-more-btn').style.display = 'inline-block';
-            tampilkanKatalog(result);
-            setStatus(`${result.length} produk ditemukan`);
+        function initLazyLoading() {
+            if (!lazyObserver) {
+                lazyObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(e => {
+                        if (!e.isIntersecting) return;
+                        const img = e.target, src = img.dataset.src;
+                        obs.unobserve(img);
+                        if (!src) return;
+                        img.onload  = () => img.classList.add('loaded');
+                        img.onerror = () => { img.onerror = null; img.src = FOTO_ERROR; img.classList.add('loaded'); };
+                        img.src = src;
+                    });
+                }, { rootMargin: '200px 0px' });
+            }
+            document.querySelectorAll('#katalog-container .lazy-img:not(.loaded)').forEach(img => {
+                if (img.getAttribute('src').startsWith('data:')) lazyObserver.observe(img);
+            });
         }
 
-        function cariProduk() {
-            const keyword = document.getElementById('search-input').value.trim();
-            const pesanReset = [];
+        /* ───────── Zoom & toast ───────── */
 
-            // Reset filter koleksi jika aktif
-            const filterAktif = document.querySelector('.filter-btn.active');
-            const namaFilter = filterAktif ? filterAktif.textContent.trim() : 'SEMUA';
-            if (keyword && namaFilter !== 'SEMUA') {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                document.querySelector('.filter-btn').classList.add('active');
-                pesanReset.push('koleksi');
-            }
-
-            // Reset filter ukuran jika aktif
-            const ukuranSelect = document.getElementById('ukuran-select');
-            if (keyword && ukuranSelect.value !== '') {
-                ukuranSelect.value = '';
-                pesanReset.push('ukuran');
-            }
-
-            if (pesanReset.length > 0) {
-                tampilkanToast(`Filter ${pesanReset.join(' & ')} direset otomatis`);
-            }
-
-            const result = getFilteredData();
-            document.getElementById('load-more-btn').style.display = 'inline-block';
-            tampilkanKatalog(result);
-            setStatus(keyword ? `${result.length} produk ditemukan untuk "${keyword}"` : `${result.length} produk tersedia`);
+        function openZoom(src) {
+            const img = document.getElementById('img-zoom');
+            img.onerror = () => { img.onerror = null; img.src = FOTO_ERROR; };
+            img.src = src;
+            document.getElementById('modal-zoom').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
-
-        function filterUkuran() {
-            const result = getFilteredData();
-            document.getElementById('load-more-btn').style.display = 'inline-block';
-            tampilkanKatalog(result);
-            const ukuran = document.getElementById('ukuran-select').value;
-            setStatus(ukuran ? `${result.length} produk ukuran "${ukuran}"` : `${result.length} produk tersedia`);
+        function closeZoom() {
+            document.getElementById('modal-zoom').style.display = 'none';
+            document.body.style.overflow = '';
         }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeZoom(); });
 
-        function openZoom(s) { document.getElementById('img-zoom').src=s; document.getElementById('modal-zoom').style.display='flex'; document.body.style.overflow='hidden'; }
-        function closeZoom() { document.getElementById('modal-zoom').style.display='none'; document.body.style.overflow=''; }
-        document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeZoom(); });
-
-        // Toast notifikasi
         function tampilkanToast(pesan) {
             let toast = document.getElementById('toast');
             if (!toast) {
@@ -881,8 +1012,7 @@
                 document.body.appendChild(toast);
             }
             toast.textContent = pesan;
-            // Paksa reflow agar transisi berjalan
-            toast.offsetHeight;
+            toast.offsetHeight; // paksa reflow agar transisi berjalan
             toast.style.opacity = '1';
             toast.style.transform = 'translateX(-50%) translateY(0)';
             clearTimeout(toast._timer);
@@ -892,6 +1022,7 @@
             }, 2500);
         }
 
+        document.getElementById('search-input').addEventListener('input', debounce(cariProduk, 250));
         ambilData();
     </script>
 </body>
