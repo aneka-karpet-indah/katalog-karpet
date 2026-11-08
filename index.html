@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aneka Karpet Indah - Katalog Resmi</title>
-    <meta name="description" content="Katalog permadani CV. Aneka Karpet Indah, Yogyakarta. Cek motif, ukuran, harga dan stok terbaru, lalu pesan langsung lewat WhatsApp.">
+    <title>Katalog Resmi Aneka Karpet Indah</title>
+    <meta name="description" content="Katalog permadani CV Aneka Karpet Indah, Yogyakarta. Cek motif, ukuran, harga, dan stok terbaru, lalu pesan langsung lewat WhatsApp.">
     <meta name="theme-color" content="#FFFCF7">
 
     <!-- Preview link saat dibagikan di WhatsApp / Facebook / Instagram -->
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="CV. Aneka Karpet Indah">
-    <meta property="og:title" content="Katalog Permadani - CV. Aneka Karpet Indah">
-    <meta property="og:description" content="Cek motif, ukuran, harga dan stok karpet terbaru. Pesan langsung lewat WhatsApp.">
+    <meta property="og:site_name" content="CV Aneka Karpet Indah">
+    <meta property="og:title" content="Katalog Permadani – CV Aneka Karpet Indah">
+    <meta property="og:description" content="Cek motif, ukuran, harga, dan stok karpet terbaru. Pesan langsung lewat WhatsApp.">
     <meta property="og:url" content="https://katalog.anekakarpetjogja.com/">
     <meta property="og:image" content="https://res.cloudinary.com/dc86lsnii/image/upload/v1793504577/Aneka-Karpet-Indah-logo-page-0001_fzveis.jpg">
     <meta property="og:locale" content="id_ID">
@@ -291,7 +291,7 @@
                     <div>
                         <img class="brand-logo"
                              src="https://res.cloudinary.com/dc86lsnii/image/upload/f_auto,q_auto,h_120/v1793504577/Aneka-Karpet-Indah-logo-page-0001_fzveis.jpg"
-                             alt="CV. Aneka Karpet Indah" fetchpriority="high">
+                             alt="CV Aneka Karpet Indah" fetchpriority="high">
                         <p class="brand-tagline">Katalog Permadani · Yogyakarta</p>
                     </div>
                     <a href="https://www.instagram.com/anekakarpetjogja/" target="_blank" rel="noopener noreferrer"
@@ -304,11 +304,11 @@
                 </div>
                 <div class="search-row">
                     <label class="search-wrap">
-                        <span class="sr-only">Cari merk atau kode motif</span>
+                        <span class="sr-only">Cari merek atau kode motif</span>
                         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true">
                             <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
                         </svg>
-                        <input type="search" id="search-input" placeholder="Cari merk atau motif"
+                        <input type="search" id="search-input" placeholder="Cari merek atau motif"
                                autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search">
                     </label>
                     <button type="button" class="filter-btn-open" id="filter-open" aria-haspopup="dialog" aria-controls="filter-sheet">
@@ -328,7 +328,7 @@
     <main>
         <div class="status-row">
             <p id="status-text" aria-live="polite">Memuat katalog…</p>
-            <button type="button" id="reset-filter">Hapus filter</button>
+            <button type="button" id="reset-filter">Hapus Filter</button>
         </div>
 
         <div class="katalog-grid" id="katalog-container">
@@ -339,7 +339,7 @@
         </div>
 
         <div id="load-more-wrap">
-            <button type="button" id="load-more-btn">Muat lebih banyak</button>
+            <button type="button" id="load-more-btn">Muat Lebih Banyak</button>
             <p id="load-more-info"></p>
         </div>
     </main>
@@ -360,12 +360,12 @@
             <h3>Urutkan</h3>
             <div class="opsi-list" id="opsi-urut">
                 <button type="button" class="opsi-btn" data-urut="">Standar</button>
-                <button type="button" class="opsi-btn" data-urut="asc">Harga termurah</button>
-                <button type="button" class="opsi-btn" data-urut="desc">Harga termahal</button>
+                <button type="button" class="opsi-btn" data-urut="asc">Harga Termurah</button>
+                <button type="button" class="opsi-btn" data-urut="desc">Harga Termahal</button>
             </div>
             <div class="sheet-actions">
                 <button type="button" class="btn-sec" id="sheet-reset">Reset</button>
-                <button type="button" class="btn-pri" id="sheet-apply">Tampilkan produk</button>
+                <button type="button" class="btn-pri" id="sheet-apply">Tampilkan Produk</button>
             </div>
         </div>
     </div>
@@ -519,7 +519,7 @@
             } catch (err) {
                 if (!adaCache) {
                     document.getElementById('katalog-container').innerHTML =
-                        `<p style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted)">Gagal memuat data. Coba refresh halaman.</p>`;
+                        `<p style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted)">Gagal memuat data. Coba muat ulang halaman.</p>`;
                     document.getElementById('status-text').textContent = '';
                 }
                 // Kalau ada data tersimpan, katalog tetap tampil walau sheet gagal diakses
@@ -719,7 +719,7 @@
             document.querySelectorAll('#opsi-urut .opsi-btn').forEach(b => b.setAttribute('aria-pressed', b.dataset.urut === draft.urut));
             const n = getFilteredData(draft.ukuran).length;
             const apply = document.getElementById('sheet-apply');
-            apply.textContent = n ? `Tampilkan ${n} produk` : 'Tidak ada produk';
+            apply.textContent = n ? `Tampilkan ${n} Produk` : 'Tidak Ada Produk';
             apply.disabled = !n;
             apply.style.opacity = n ? '' : '.5';
         }
@@ -826,7 +826,7 @@
                          data-src="${esc(fotoKecil(def.foto))}"
                          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
                          alt="${esc(item.koleksi + ' ' + item.nama)}" decoding="async">
-                    ${habis ? '<span class="stok-habis-badge">Stok habis</span>' : ''}
+                    ${habis ? '<span class="stok-habis-badge">Stok Habis</span>' : ''}
                 </div>
                 <div class="card-body">
                     <p class="card-koleksi">${esc(item.koleksi)}</p>
@@ -898,7 +898,7 @@
             if (habis && !badge) {
                 badge = document.createElement('span');
                 badge.className = 'stok-habis-badge';
-                badge.textContent = 'Stok habis';
+                badge.textContent = 'Stok Habis';
                 wrap.appendChild(badge);
             } else if (!habis && badge) {
                 badge.remove();
