@@ -272,6 +272,20 @@
         #modal-zoom .modal-backdrop { position: absolute; inset: 0; cursor: zoom-out; }
         #modal-zoom .modal-content { position: relative; z-index: 1; }
         #img-zoom { max-width: 92vw; max-height: 88vh; object-fit: contain; border-radius: 12px; }
+        #img-zoom.kecil { width: min(92vw, 900px); height: auto; }  /* versi kecil ditampilkan seukuran versi besar */
+        #zoom-loading {
+            position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 2;
+            display: none; align-items: center; gap: 8px;
+            background: rgba(255,252,247,0.15); color: #fff; font-size: 13px;
+            padding: 6px 14px; border-radius: 999px; pointer-events: none;
+        }
+        #zoom-loading.tampil { display: flex; }
+        #zoom-loading::before {
+            content: ''; width: 14px; height: 14px; border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff;
+            animation: putar .8s linear infinite;
+        }
+        @keyframes putar { to { transform: rotate(360deg); } }
         #modal-close-btn {
             position: fixed; top: 16px; right: 16px; z-index: 2;
             width: 44px; height: 44px; border-radius: 50%;
@@ -376,8 +390,9 @@
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
         <div class="modal-content">
-            <img id="img-zoom" src="" alt="Foto karpet" decoding="async">
+            <img id="img-zoom" alt="Foto karpet" decoding="async">
         </div>
+        <div id="zoom-loading" role="status">Memuat foto tajam…</div>
     </div>
 
     <script>
@@ -859,7 +874,10 @@
 
             if (e.target.closest('.share-btn')) { shareProduct(item, item.variasi[+card.dataset.v]); return; }
 
-            if (e.target.closest('.card-img-wrap')) openZoom(fotoBesar(item.variasi[+card.dataset.v].foto), item.koleksi + ' ' + item.nama);
+            if (e.target.closest('.card-img-wrap')) {
+                const foto = item.variasi[+card.dataset.v].foto;
+                openZoom(fotoKecil(foto), fotoBesar(foto), item.koleksi + ' ' + item.nama);
+            }
         });
         katalog.addEventListener('keydown', e => {
             if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('card-img-wrap')) {
@@ -958,11 +976,37 @@
         /* ───────── Zoom & toast ───────── */
 
         let fokusSebelumZoom = null;
-        function openZoom(src, alt) {
+        let zoomToken = 0;   // mencegah foto lama yang telat selesai menimpa foto baru
+
+        // Tampilkan foto kecil (sudah ada di cache dari card) seketika, lalu ganti ke versi tajam begitu selesai dimuat
+        function openZoom(srcKecil, srcBesar, alt) {
             const img = document.getElementById('img-zoom');
-            img.onerror = () => { img.onerror = null; img.src = FOTO_ERROR; };
-            img.src = src;
+            const loading = document.getElementById('zoom-loading');
+            const token = ++zoomToken;
+
+            img.removeAttribute('src');           // buang foto sebelumnya
             img.alt = alt || 'Foto karpet';
+            img.onerror = () => { img.onerror = null; img.src = FOTO_ERROR; img.classList.remove('kecil'); };
+
+            if (srcKecil && srcKecil !== srcBesar) {
+                img.classList.add('kecil');
+                img.src = srcKecil;
+                loading.classList.add('tampil');
+                const besar = new Image();
+                besar.onload = () => {
+                    if (token !== zoomToken) return;
+                    img.src = srcBesar;
+                    img.classList.remove('kecil');
+                    loading.classList.remove('tampil');
+                };
+                besar.onerror = () => { if (token === zoomToken) loading.classList.remove('tampil'); };
+                besar.src = srcBesar;
+            } else {
+                img.classList.remove('kecil');
+                loading.classList.remove('tampil');
+                img.src = srcBesar || srcKecil;
+            }
+
             fokusSebelumZoom = document.activeElement;
             document.getElementById('modal-zoom').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -973,6 +1017,9 @@
             if (modal.style.display !== 'flex') return;
             modal.style.display = 'none';
             document.body.style.overflow = '';
+            zoomToken++;                                   // abaikan foto yang masih dimuat
+            document.getElementById('img-zoom').removeAttribute('src');
+            document.getElementById('zoom-loading').classList.remove('tampil');
             fokusSebelumZoom?.focus?.();
         }
         document.addEventListener('keydown', e => {
